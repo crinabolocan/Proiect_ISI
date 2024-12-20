@@ -47,3 +47,86 @@ function readUserData(userId) {
 writeUserData('1', 'Crina', 'crina@gmail.com');
 
 readUserData('1');
+
+// register part of the code
+import express from 'express';
+import bodyParser from 'body-parser';
+import firebaseAdmin from 'firebase-admin';
+// const express = require('express');
+// const bodyParser = require('body-parser');
+// const firebaseAdmin = require('firebase-admin');
+
+import serviceAccount from "./src/FirebaseService.json" assert { type: "json" };
+// const serviceAccount = require('./proiect-isi-c4cf7-firebase-adminsdk-1zv3v-3b3b3b3b3b.json');
+firebaseAdmin.initializeApp({
+    credential: firebaseAdmin.credential.cert(serviceAccount),
+    databaseURL: 'https://proiect-isi-c4cf7-default-rtdb.europe-west1.firebasedatabase.app'
+});
+
+const apps = express();
+apps.use(bodyParser.json());
+
+
+// Define the root route with a registration form
+apps.get("/", (req, res) => {
+    res.send(`
+        <html>
+        <head>
+            <title>Register</title>
+        </head>
+        <body>
+            <h1>Register</h1>
+            <form action="/register" method="POST">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required><br><br>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required><br><br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required><br><br>
+                <button type="submit">Register</button>
+            </form>
+        </body>
+        </html>
+    `);
+});
+
+// Handle registration
+apps.post('/register', async (req, res) => {
+    const { email, username, password } = req.body;
+
+    try {
+        const user = await firebaseAdmin.auth().createUser({
+            email,
+            password,
+            displayName: username
+        });
+
+        await firebaseAdmin.auth().setCustomUserClaims(user.uid, {
+            role: 'user'
+        });
+
+        res.status(201).send(`
+            <html>
+            <body>
+                <h1>Registration Successful!</h1>
+                <p>User: ${username} has been registered successfully.</p>
+                <a href="/">Back to Register</a>
+            </body>
+            </html>
+        `);
+    } catch (error) {
+        console.error('Error registering:', error);
+        res.status(500).send(`
+            <html>
+            <body>
+                <h1>Error</h1>
+                <p>An unknown error occurred during registration. Please try again.</p>
+                <a href="/">Back to Register</a>
+            </body>
+            </html>
+        `);
+    }
+});
+
+// Start the server
+apps.listen(3000, () => console.log('Server running on http://localhost:3000'));

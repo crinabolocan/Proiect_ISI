@@ -1,4 +1,4 @@
-const { admin } = require("../config/firebase");
+import { admin } from '../config/firebase.js';
 const verifyToken = async (req, res, next) => {
     const idToken = req.cookies.access_token;
     if (!idToken) {
@@ -15,4 +15,6 @@ const verifyToken = async (req, res, next) => {
     }
 };
 
-module.exports = verifyToken;
+// module.exports = verifyToken;
+
+export default verifyToken;

@@ -1,3 +1,0 @@
-CREATE DATABASE Proiect_ISI;
-
-USE Proiect_ISI;
