@@ -1,0 +1,152 @@
+/* Aplică fundalul pentru întreaga pagină */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Copperplate';
+}
+
+body, html {
+    height: 100%;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: url('background2.jpg') no-repeat center center; /* Fundalul */
+    background-size: 100%;
+    height: 100%;
+    width: auto;
+    max-width: 90%;
+    padding: 20px;
+    border-radius: 15px;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Hamburger Menu */
+.hamburger-menu {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000; /* Asigură-te că meniul este deasupra altor elemente */
+}
+
+.hamburger-icon {
+    font-size: 45px;
+    color: rgb(196, 35, 185);
+    background-color: transparent;
+    border:darkgray;
+    cursor:pointer;
+    padding: 10px;
+    display: block;
+}
+
+.menu {
+    display: none; /* Meniul este ascuns inițial */
+    position: absolute;
+    top: 50px;
+    left: 0;
+    background-color: #333; /* Fundalul meniului */
+    width: 150px; /* Lățimea meniului */
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Umbră pentru efect vizual */
+}
+
+.menu.show {
+    display: block; /* Meniul devine vizibil când este activat */
+}
+
+.menu a {
+    display: block;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.menu a:hover {
+    background-color: #575757;
+}
+
+
+/* Sigla în partea dreaptă sus */
+.logo-container {
+    position: absolute;
+    top: 60px;
+    right: 190px;
+}
+
+.logo {
+    width: 400px; /* Ajustează dimensiunea logo-ului */
+    height: auto;
+}
+
+/* Titlul "Welcome" în centrul sus */
+h1 {
+    text-align: center;
+    font-size: 55px;
+    color: white;
+    padding-top: 100px;
+}
+
+/* Containerul principal care va conține descrierea și butoanele */
+.content {
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 80%;
+    padding: 40px;
+    margin-top: 50px;
+}
+
+/* Descrierea textului */
+.description-container {
+    width: 60%; /* Lăsăm mai mult spațiu pentru text */
+    padding: 20px;
+    color: #fff; /* Text alb pentru a fi vizibil pe fundal */
+    line-height: 1.6;
+}
+
+.description-container p {
+    font-size: 25px;
+    margin-bottom: 15px;
+}
+
+.description-container strong {
+    font-size: 35px;
+}
+
+/* Butoanele */
+.buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 35%;
+    margin-top: 50px;
+}
+
+.buttons a {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 20px;
+    background: #6c63ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Arial', sans-serif;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn:hover {
+    background: #574bdb;
+}

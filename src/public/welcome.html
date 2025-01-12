@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="style_welcome.css">
+</head>
+<body>
+     <!-- Hamburger Menu -->
+     <div class="hamburger-menu">
+        <button class="hamburger-icon" onclick="toggleMenu()">&#9776;</button> <!-- 3 puncte -->
+        <div id="menu" class="menu">
+            <a href="/" class="btn">Main Page</a>
+        </div>
+    </div>
+
+    <div class="logo-container">
+        <img src="logo.jpg" alt="Logo" class="logo">
+    </div>
+    
+    <h1>Welcome to WHERETO?</h1>
+
+    <div class="content">
+        <!-- Partea cu descrierea -->
+        <div class="description-container">
+            <p><strong>Bine ai venit în lumea călătoriilor vizuale!</strong></p>
+            <p>Descoperă cele mai impresionante destinații turistice din întreaga lume printr-un feed interactiv plin de imagini fascinante. Fiecare fotografie te poartă într-o aventură nouă, iar tu poți să apreciezi și să salvezi în folderul tău personal acele locații care te inspiră.</p>
+            <p><strong>Explorează, salvează și planifică!</strong></p>
+            <p>Adaugă în favorite fotografii din cele mai frumoase locuri și vizualizează-le într-o mapă personalizată. Folosind funcționalitatea integrată a hărții interactive, poți explora locațiile exacte ale destinațiilor salvate și accesa informații utile precum coordonatele și adresele acestora.</p>
+            <p>Fie că vrei să îți planifici următoarea vacanță sau pur și simplu să te pierzi într-o explorare virtuală a lumii, aplicația noastră este instrumentul ideal pentru a transforma fiecare călătorie visată într-o realitate palpabilă.</p>
+            <p><strong>Începe aventura acum!</strong></p>
+        </div>
+        <!-- Partea cu butoanele -->
+        <div class="buttons">
+            <a href="/login">
+                <button class="btn">Login</button>
+            </a>
+            <a href="/register">
+                <button class="btn">Register</button>
+            </a>
+        </div>
+    </div>
+    <script>
+        // Funcție pentru a deschide/închide meniul
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            menu.classList.toggle('show');
+        }
+    
+        // Închide meniul dacă se face clic în afacerea acestuia
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('menu');
+            const hamburgerIcon = document.querySelector('.hamburger-icon');
+    
+            // Dacă clicul nu a fost pe meniul hamburger sau pe meniul în sine
+            if (!menu.contains(event.target) && !hamburgerIcon.contains(event.target)) {
+                menu.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

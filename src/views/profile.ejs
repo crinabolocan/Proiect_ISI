@@ -1,0 +1,44 @@
+<!-- views/profile.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="style_profile.css">
+</head>
+<body>
+    <!-- Hamburger Menu -->
+    <div class="hamburger-menu">
+    <button class="hamburger-icon" onclick="toggleMenu()">&#9776;</button> <!-- 3 puncte -->
+    <div id="menu" class="menu">
+        <a href="/" class="btn">Main Page</a>
+    </div>
+    </div>
+    <div class="container">
+        <div class="profile-container">
+            <h1>Welcome, <%= username %>!</h1>
+            <p>Email: <%= email %></p>
+            <button onclick="window.location.href='/logout'">Logout</button>
+        </div>
+    </div>
+    <script>
+        // Funcție pentru a deschide/închide meniul
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            menu.classList.toggle('show');
+        }
+    
+        // Închide meniul dacă se face clic în afacerea acestuia
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('menu');
+            const hamburgerIcon = document.querySelector('.hamburger-icon');
+    
+            // Dacă clicul nu a fost pe meniul hamburger sau pe meniul în sine
+            if (!menu.contains(event.target) && !hamburgerIcon.contains(event.target)) {
+                menu.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

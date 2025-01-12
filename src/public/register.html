@@ -4,57 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style_register.css">
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <span class="hamburger-btn material-symbols-rounded">menu</span>
-            <a href="#" class="logo">
-                <img src="images/logo.jpg" alt="logo">
-            </a>
-        </nav>
-    </header>
-
-    <div class="form-popup">
-        <span class="close-btn material-symbols-rounded">close</span>
-        <div class="form-box signup">
-            <div class="form-details">
-                <h2>Create Account</h2>
-                <p>To become a part of our community, please sign up using your personal information.</p>
-            </div>
-            <div class="form-content">
-                <h2>SIGN UP</h2>
-                <form action="/register" method="POST">
-                    <div class="input-field">
-                        <input type="text" id="username" name="username" required>
-                        <label for="username">Enter your username</label>
+    <!-- Hamburger Menu -->
+    <div class="hamburger-menu">
+    <button class="hamburger-icon" onclick="toggleMenu()">&#9776;</button> <!-- 3 puncte -->
+    <div id="menu" class="menu">
+        <a href="/" class="btn">Main Page</a>
+    </div>
+    </div>
+    <div class="background">
+        <div class="form-popup">
+            <div class="form-box register">
+                <div class="form-header">
+                    <h2>Create an Account</h2>
+                </div>
+                <div class="form-body">
+                    <h2>REGISTER</h2>
+                    <form action="/register" method="POST">
+                        <div class="input-field">
+                            <label for="username">Enter your username</label>
+                            <input type="text" id="username" name="username" required>
+                            
+                        </div>
+                        <div class="input-field">
+                            <label for="email">Enter your email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="input-field">
+                            <label for="password">Create password</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <div class="input-field">
+                            <label for="confirm-password">Confirm password</label>
+                            <input type="password" id="confirm-password" name="confirm-password" required>
+                        </div>
+                        <div class="policy-text">
+                            <input type="checkbox" id="policy" name="policy" required>
+                            <label for="policy">
+                                I agree to the 
+                                <a href="#" class="option">Terms & Conditions</a>
+                            </label>
+                        </div>
+                        <button type="submit" class="submit-btn">Register</button>
+                    </form>
+                    <div class="bottom-link">
+                        Already have an account? 
+                        <a href="/login">Login</a>
                     </div>
-                    <div class="input-field">
-                        <input type="email" id="email" name="email" required>
-                        <label for="email">Enter your email</label>
-                    </div>
-                    <div class="input-field">
-                        <input type="password" id="password" name="password" required>
-                        <label for="password">Create password</label>
-                    </div>
-                    <div class="policy-text">
-                        <input type="checkbox" id="policy" name="policy" required>
-                        <label for="policy">
-                            I agree to the 
-                            <a href="#" class="option">Terms & Conditions</a>
-                        </label>
-                    </div>
-                    <button type="submit">Register</button>
-                </form>
-                <div class="bottom-link">
-                    Already have an account? 
-                    <a href="/login">Login</a>
                 </div>
             </div>
         </div>
     </div>
 
+    <script>
+        // Funcție pentru a deschide/închide meniul
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            menu.classList.toggle('show');
+        }
+    
+        // Închide meniul dacă se face clic în afacerea acestuia
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('menu');
+            const hamburgerIcon = document.querySelector('.hamburger-icon');
+    
+            // Dacă clicul nu a fost pe meniul hamburger sau pe meniul în sine
+            if (!menu.contains(event.target) && !hamburgerIcon.contains(event.target)) {
+                menu.classList.remove('show');
+            }
+        });
+    </script>
     <script src="script.js" defer></script>
 </body>
 </html>

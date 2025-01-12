@@ -1,0 +1,181 @@
+/* General reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+}
+
+/* Background styles */
+.background {
+    background: url('background2.jpg') no-repeat center center;
+    background-size: 100%;
+    height: 100%;
+    width: auto;
+    max-width: 90%;
+    padding: 20px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Hamburger Menu */
+.hamburger-menu {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000; /* Asigură-te că meniul este deasupra altor elemente */
+}
+
+.hamburger-icon {
+    font-size: 45px;
+    color: rgb(196, 35, 185);
+    background-color: transparent;
+    border:darkgray;
+    cursor:pointer;
+    padding: 10px;
+    display: block;
+}
+
+.menu {
+    display: none; /* Meniul este ascuns inițial */
+    position: absolute;
+    top: 50px;
+    left: 0;
+    background-color: #333; /* Fundalul meniului */
+    width: 150px; /* Lățimea meniului */
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Umbră pentru efect vizual */
+}
+
+.menu.show {
+    display: block; /* Meniul devine vizibil când este activat */
+}
+
+.menu a {
+    display: block;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.menu a:hover {
+    background-color: #575757;
+}
+
+/* Form container styles */
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    width: 100%;
+}
+
+.form-box {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 40px;
+    width: 500px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.form-box h2 {
+    font-size: 50px;
+    color: #fff;
+    margin-bottom: 25px;
+    font-family: Copperplate;
+    font-weight: bold;
+}
+
+.input-field {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-field label {
+    display: block;
+    font-size: 25px;
+    color: #fff;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-family: Copperplate;
+}
+
+.input-field input {
+    width: 100%;
+    padding: 12px;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+}
+
+.input-field input:focus {
+    border: 2px solid #8f94fb;
+}
+
+/* Checkbox styles */
+.policy-text {
+    font-size: 18px;
+    color: #fff;
+    font-family: Copperplate;
+}
+
+.policy-text a {
+    color: #a9a9f5;
+    text-decoration: none;
+}
+
+.policy-text a:hover {
+    text-decoration: underline;
+}
+
+/* Button */
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 25px;
+    background: #6c63ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: Copperplate;
+}
+
+.submit-btn:hover {
+    background: #574bdb;
+}
+
+.bottom-link {
+    font-size: 20px;
+    color: #fff;
+    margin-top: 20px;
+}
+
+.bottom-link a {
+    color: #a9a9f5;
+    text-decoration: none;
+}
+
+.bottom-link a:hover {
+    text-decoration: underline;
+}
+
+input[type="checkbox"] {
+    width: 15px; /* Ajustează lățimea */
+    height: 15px; /* Ajustează înălțimea */
+    transform: scale(1.5); /* Scălește checkbox-ul pentru a-l mări */
+    margin-right: 8px; /* Spațiu între checkbox și etichetă */
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <link rel="stylesheet" href="style_welcome.css">
+</head>
+<body>
+    <!-- Hamburger Menu -->
+    <div class="hamburger-menu">
+        <button class="hamburger-icon" onclick="toggleMenu()">&#9776;</button>
+        <div id="menu" class="menu">
+            <% if (username) { %>
+                <a href="/profile" class="btn">Profile</a>
+                <a href="/logout" class="btn">Logout</a>
+            <% } else { %>
+                <a href="/login" class="btn">Login</a>
+                <a href="/register" class="btn">Register</a>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Logo -->
+    <div class="logo-container">
+        <img src="logo.jpg" alt="Logo" class="logo">
+    </div>
+
+    <!-- Welcome Message -->
+    <h1>Welcome to WHERETO?</h1>
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="description-container">
+            <p><strong>Explore the World Visually!</strong></p>
+            <p>Discover stunning destinations through an interactive feed of breathtaking images. Each photo invites you to a new adventure, where you can save your favorite spots for future exploration.</p>
+            <p><strong>Save, Plan, and Explore!</strong></p>
+            <p>Create a personalized collection of your favorite places and view them on an interactive map. Access detailed information such as coordinates and addresses for easy planning.</p>
+            <p>Whether you’re planning your next trip or simply exploring the world virtually, our platform is your gateway to making every dream destination a reality.</p>
+            <p><strong>Start your adventure today!</strong></p>
+        </div>
+
+        <!-- Buttons -->
+        <div class="buttons">
+            <% if (username) { %>
+                <p>Logged in as: <%= username %> (<%= email %>)</p>
+                <a href="/profile">
+                    <button class="btn">Go to Profile</button>
+                </a>
+                <a href="/logout">
+                    <button class="btn">Logout</button>
+                </a>
+            <% } else { %>
+                <a href="/login">
+                    <button class="btn">Login</button>
+                </a>
+                <a href="/register">
+                    <button class="btn">Register</button>
+                </a>
+            <% } %>
+        </div>
+    </div>
+
+    <script>
+        // Function to toggle the menu
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            menu.classList.toggle('show');
+        }
+
+        // Close the menu if clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('menu');
+            const hamburgerIcon = document.querySelector('.hamburger-icon');
+
+            if (!menu.contains(event.target) && !hamburgerIcon.contains(event.target)) {
+                menu.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 8080;
 import { fileURLToPath } from 'url';
 import path from 'path';
 import bcrypt from 'bcrypt';
-
+import session from 'express-session';
 
 // Creează __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -20,11 +20,31 @@ app.use(express.json())
 // app.use(cookieParser())
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
+app.use(session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { 
+        maxAge: 24 * 60 * 60 * 1000 // Cookie valid timp de 1 zi
+    }
+}));
+app.set('view engine', 'ejs');
 
+
+
+// app.get('/', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'public', 'welcome.html'));
+// });
 
 app.get('/', (req, res) => {
-    res.send('Hello World');
+    if (req.session.user) {
+        const user = req.session.user;
+        res.render('main', { username: user.username, email: user.email });
+    } else {
+        res.redirect('/logout'); // Dacă nu este autentificat, redirecționează la login
+    }
 });
+
 
 app.get('/users', (req, res) => {
     // Executare query
@@ -70,7 +90,8 @@ app.post('/register', async (req, res) => {
                 res.status(500).send('Database query error');
                 return;
             }
-            res.send('Registration successful!');
+            // După înregistrare reușită, redirecționăm utilizatorul la pagina de profil
+            res.redirect('/profile'); // Redirecționare către pagina de profil
         });
     } catch (err) {
         console.error('Error hashing password:', err.message);
@@ -78,15 +99,16 @@ app.post('/register', async (req, res) => {
     }
 });
 
+
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
 // Procesarea autentificării
 app.post('/login', (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    db.query('SELECT * FROM users WHERE username = ?', [username], async (err, results) => {
+    db.query('SELECT * FROM users WHERE email = ?', [email], async (err, results) => {
         if (err) {
             console.error('Error executing query:', err.message);
             res.status(500).send('Database query error');
@@ -103,7 +125,9 @@ app.post('/login', (req, res) => {
         try {
             const isPasswordMatch = await bcrypt.compare(password, user.password);
             if (isPasswordMatch) {
-                res.send('Login successful!');
+                // După login reușit, redirecționăm utilizatorul la pagina de profil
+                req.session.user = user;
+                res.redirect('/profile'); // Redirecționare către pagina de profil
             } else {
                 res.status(401).send('Invalid username or password');
             }
@@ -113,6 +137,33 @@ app.post('/login', (req, res) => {
         }
     });
 });
+
+// Pagina de profil
+app.get('/profile', (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login'); // Dacă nu este autentificat, redirecționează la login
+    }
+
+    const user = req.session.user;
+    res.render('profile', { username: user.username, email: user.email });
+});
+
+app.get('/logout', (req, res) => {
+    // Șterge sesiunea utilizatorului
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Error destroying session:', err.message);
+            res.status(500).send('Unable to logout');
+            return;
+        }
+        res.redirect('/logged-out'); // Redirecționează către pagina cu opțiuni
+    });
+});
+
+app.get('/logged-out', (req, res) => {
+    res.render('logout');
+});
+
 
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
