@@ -43,6 +43,8 @@
       }
     });
 
+    const favoriteImages = <%- JSON.stringify(favoriteImages) %>;
+    console.log(favoriteImages);
     require([
       "esri/config",
       "esri/WebMap",
@@ -77,7 +79,44 @@
 
           // Add a GraphicsLayer to the map
           const geoLocationLayer = new GraphicsLayer();
+          const graphicsLayer = new GraphicsLayer();
+          webMap.add(graphicsLayer);
           webMap.add(geoLocationLayer);
+
+          favoriteImages.forEach(image => {
+            const point = new Point({
+              longitude: image.long,
+              latitude: image.lat
+            });
+
+            const simpleMarkerSymbol = {
+            type: "simple-marker",
+            color: [226, 119, 40], // Orange
+            outline: {
+              color: [255, 255, 255], // White
+              width: 1
+            }
+          };
+
+            const pointGraphic = new Graphic({
+              geometry: point,
+              symbol: simpleMarkerSymbol,
+              attributes: {
+                imageUrl: image.imageUrl,
+                description: image.description
+              },
+              popupTemplate: {
+                title: "Favorite Image",
+                content: `
+                  <img src="${image.imageUrl}" alt="Favorite" style="width: 100px; height: auto;">
+                  <p>${image.description}</p>
+                `
+              }
+            });
+
+            // Add the graphic to the view's graphics collection
+            graphicsLayer.add(pointGraphic);
+          });
 
 
           const locatorUrl = "http://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer";

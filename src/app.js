@@ -155,17 +155,17 @@ app.get('/profile', (req, res) => {
 
     const user = req.session.user;
 
-    // Obține imaginile favorite din baza de date
-    db.query('SELECT image_url FROM favorites WHERE user_id = ?', [user.id], (err, results) => {
+    // Obține imaginile favorite și review-urile din baza de date
+    db.query('SELECT image_url, review FROM favorites WHERE user_id = ?', [user.id], (err, results) => {
         if (err) {
             console.error('Error fetching favorite images:', err.message);
             return res.status(500).send('Error fetching favorite images');
         }
 
-        const favoriteImages = results.map(row => row.image_url);  // Extrage URL-urile imaginilor
-        res.render('profile', { username: user.username, email: user.email, favoriteImages: favoriteImages });
+        res.render('profile', { username: user.username, email: user.email, favoriteImages: results });
     });
 });
+
 
 
 app.get('/logout', (req, res) => {
@@ -278,13 +278,57 @@ app.post('/remove-favorite', (req, res) => {
 });
 
 app.get('/map', (req, res) => {
-    res.render('map');
-    // if (req.session.user) {
-    //     const user = req.session.user;
-    // } else {
-    //     res.redirect('/logout'); // Dacă nu este autentificat, redirecționează la login
-    // }
+    if (!req.session.user) {
+        return res.redirect('/login'); // Dacă nu este autentificat, redirecționează la login
+    }
+
+    const user = req.session.user;
+    db.query('SELECT id, user_id, image_url, review, latitude, longitude FROM favorites WHERE user_id = ?', [user.id], (err, results) => {
+        if (err) {
+            console.error('Error fetching favorite images:', err.message);
+            return res.status(500).send('Error fetching favorite images');
+        }
+        console.log("Query results:", results);
+
+        const favoriteImages = results.map(row => ({
+            id: row.id,            // ID-ul imaginii
+            imageUrl: row.image_url, // URL-ul imaginii
+            review: row.review, // Descrierea imaginii
+            userId: row.user_id,   // ID-ul utilizatorului care a adăugat poza
+            long: row.longitude,
+            lat: row.latitude
+        }));
+        console.log("favoriteImages", favoriteImages);
+        res.render('map', { username: user.username, email: user.email, favoriteImages: favoriteImages });
+    });
 });
+
+
+// Endpoint pentru a adăuga sau actualiza review-ul unei imagini
+app.post('/add-review', (req, res) => {
+    const { imageUrl, review } = req.body;
+    const userId = req.session.user.id;
+
+    if (!imageUrl || !review) {
+        return res.status(400).send('Image URL and review are required');
+    }
+
+    // Actualizează review-ul în baza de date
+    db.query(
+        'UPDATE favorites SET review = ? WHERE user_id = ? AND image_url = ?',
+        [review, userId, imageUrl],
+        (err, results) => {
+            if (err) {
+                console.error('Error updating review:', err.message);
+                return res.status(500).send('Error updating review');
+            }
+            res.status(200).send('Review added successfully');
+        }
+    );
+});
+
+
+
 
 
 import router from './routes/index.js';
