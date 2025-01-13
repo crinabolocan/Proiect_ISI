@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Images</title>
+    <link rel="stylesheet" href="style_images.css">
+</head>
+<body>
+    <!-- Hamburger Menu -->
+    <div class="hamburger-menu">
+        <button class="hamburger-icon" onclick="toggleMenu()">&#9776;</button>
+        <div id="menu" class="menu">
+            <a href="/" class="btn">Main Page</a>
+        </div>
+    </div>
+    <div class="images-container">
+        <h1>Let's choose your favorite places, <%= username %>!</h1>
+        <div class="image-gallery">
+            <% images.forEach(image => { %>
+                <div class="image-item">
+                    <img src="<%= image %>" alt="Random Image">
+                    <div class="heart" id="heaart" onclick="toggleHeart(this)">
+                        <div class="heart-shape"></div>
+                    </div>
+                    <button onclick="addToFavorites('<%= image %>')">Add to Favorites</button>
+                </div>
+            <% }) %>
+        </div>
+        <!-- Butonul pentru încărcarea altor imagini -->
+        <div class="load-more">
+            <a href="/images?page=<%= page + 1 %>">
+                <button>Load More Images</button>
+            </a>
+        </div>
+        <button class="back-button" onclick="window.location.href='/profile'">Back to Profile</button>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            menu.classList.toggle('show');
+        }
+
+        // Închide meniul dacă se face clic în afara acestuia
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('menu');
+            const hamburgerIcon = document.querySelector('.hamburger-icon');
+
+            if (!menu.contains(event.target) && !hamburgerIcon.contains(event.target)) {
+                menu.classList.remove('show');
+            }
+        });
+
+        // Functia pentru a activa/dezactiva inima
+        function toggleHeart(heartElement) {
+            // Togglează clasa 'liked'
+            heartElement.classList.toggle('liked');
+            
+            const imageUrl = heartElement.closest('.image-item').querySelector('img').src;
+            
+            if (heartElement.classList.contains('liked')) {
+                // Dacă imaginea a fost adăugată la favorite (like)
+                addToFavorites(imageUrl);
+            } else {
+                // Dacă imaginea a fost eliminată din favorite (unlike)
+                removeFromFavorites(imageUrl);
+            }
+        }
+    
+        // Functia pentru a adăuga imaginea la favorite
+        function addToFavorites(imageUrl) {
+            fetch('/add-favorite', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ imageUrl: imageUrl })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Image added to favorites!');
+            })
+            .catch(error => {
+                console.error('Error adding image to favorites:', error);
+            });
+        }
+    
+        // Functia pentru a elimina imaginea din favorite
+        function removeFromFavorites(imageUrl) {
+            fetch('/remove-favorite', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ imageUrl: imageUrl })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Image removed from favorites!');
+            })
+            .catch(error => {
+                console.error('Error removing image from favorites:', error);
+            });
+        }
+    </script>
+</body>
+</html>

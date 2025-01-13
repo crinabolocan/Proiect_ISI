@@ -31,32 +31,31 @@ body, html {
     position: fixed;
     top: 20px;
     left: 20px;
-    z-index: 1000; /* Asigură-te că meniul este deasupra altor elemente */
+    z-index: 1000;
 }
 
 .hamburger-icon {
     font-size: 45px;
     color: rgb(196, 35, 185);
     background-color: transparent;
-    border:darkgray;
-    cursor:pointer;
+    border: darkgray;
+    cursor: pointer;
     padding: 10px;
     display: block;
 }
 
 .menu {
-    display: none; /* Meniul este ascuns inițial */
-    position: absolute;
-    top: 50px;
+    display: none;
+    position: relative;
     left: 0;
-    background-color: #333; /* Fundalul meniului */
-    width: 150px; /* Lățimea meniului */
+    background-color: #333;
+    width: 150%;
     border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Umbră pentru efect vizual */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .menu.show {
-    display: block; /* Meniul devine vizibil când este activat */
+    display: block;
 }
 
 .menu a {
@@ -71,6 +70,22 @@ body, html {
     background-color: #575757;
 }
 
+/* Button */
+.btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 25px;
+    background: #6c63ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: Copperplate;
+}
+
+.btn:hover {
+    background: #574bdb;
+}
 /* Form container styles */
 .form-container {
     display: flex;

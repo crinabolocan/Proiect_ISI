@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Copperplate';
 }
 
 body, html {
@@ -31,7 +31,6 @@ body, html {
 .menu {
     display: none; /* Meniul este ascuns inițial */
     position: absolute;
-    top: 50px;
     left: 0;
     background-color: #333; /* Fundalul meniului */
     width: 150px; /* Lățimea meniului */

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Map with ArcGIS</title>
+  <!-- Include ArcGIS Styles -->
+  <link rel="stylesheet" href="https://js.arcgis.com/4.24/esri/themes/light/main.css">
+  <link rel="stylesheet" href="style_map.css">
+
+</head>
+<body>
+  <!-- Hamburger Menu -->
+  <div class="hamburger-menu">
+    <button class="hamburger-icon" onclick="toggleMenu()">&#9776;</button>
+    <div id="menu" class="menu">
+      <a href="/" class="btn">Main Page</a>
+      <a href="/images" class="btn">Images</a>
+      <a href="/profile" class="btn">Profile</a>
+    </div>
+  </div>
+  <!-- Map container -->
+  <div id="map-container"></div>
+
+
+  <button id="geolocate-btn">I'm Here!</button>
+  <!-- Include the ArcGIS API -->
+  <script src="https://js.arcgis.com/4.24/"></script>
+
+  <script>
+    // Toggle function for hamburger menu
+    function toggleMenu() {
+      const menu = document.getElementById('menu');
+      menu.classList.toggle('show');
+    }
+
+    // Close the menu if clicked outside
+    document.addEventListener('click', function(event) {
+      const menu = document.getElementById('menu');
+      const hamburgerIcon = document.querySelector('.hamburger-icon');
+      if (!menu.contains(event.target) && !hamburgerIcon.contains(event.target)) {
+        menu.classList.remove('show');
+      }
+    });
+
+    require([
+      "esri/config",
+      "esri/WebMap",
+      "esri/views/MapView",
+      "esri/layers/GraphicsLayer",
+      "esri/Graphic",
+      "esri/geometry/Point",
+      "esri/symbols/SimpleMarkerSymbol",
+      "esri/symbols/PictureMarkerSymbol",
+      "esri/rest/locator",
+      "esri/core/reactiveUtils"
+    ], function(esriConfig, WebMap, MapView, GraphicsLayer, Graphic, Point, SimpleMarkerSymbol, PictureMarkerSymbol, Locator, reactiveUtils) {
+
+      // Set the API key
+      esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurHTsJQpcDKEq34qs1KboR7ROzBxg9Ji1qhoRpyID_b3LhnnR36uXNGvR19UH-CCr5LINEBSM7uinPv6zbJiwubIC7vFYy48UVUSs_FieWxQs--DmcQPM9Reu1I2Igb4HXkUTK6eTA2MDfPJO-QVgFwk3i5ad5xaeRRXUUw1ISFVGNTPIYs4F2JoAIUYLiCqF89pwu6ZQiTpF6UsqGFV151o.AT1_dTFGHSMJ";
+
+      // Initialize the map
+      const initializeMap = () => {
+        try {
+          // Create a WebMap
+          const webMap = new WebMap({
+            basemap: "streets-navigation-vector"
+          });
+
+          // Create the MapView
+          const mapView = new MapView({
+            container: "map-container", // ID of the HTML element
+            map: webMap,
+            center: [-118.73682450024377, 34.07817583063242], // Longitude, Latitude
+            zoom: 10,
+          });
+
+          // Add a GraphicsLayer to the map
+          const geoLocationLayer = new GraphicsLayer();
+          webMap.add(geoLocationLayer);
+
+
+          const locatorUrl = "http://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer";
+
+          const places = ["Choose a place type...", "Parks and Outdoors", "Coffee shop", "Gas station", "Food", "Hotel"];
+
+          const select = document.createElement("select");
+          select.setAttribute("class", "esri-widget esri-select");
+          select.setAttribute("style", "width: 175px; font-family: 'Avenir Next W00'; font-size: 1em");
+
+          places.forEach((place) => {
+            const option = document.createElement("option");
+            option.value = place;
+            option.innerHTML = place;
+            select.appendChild(option);
+          });
+
+          mapView.ui.add(select, "top-right");
+
+          function findPlaces(category, pt) {
+            if (category === "Choose a place type...") {
+              mapView.graphics.removeAll();
+              return;
+            }
+
+            locator.addressToLocations(locatorUrl, {
+              location: pt,
+              categories: [category],
+              maxLocations: 25,
+              outFields: ["Place_addr", "PlaceName"]
+            }).then((results) => {
+              mapView.graphics.removeAll();
+
+              results.forEach((result) => {
+                const pointGraphic = new Graphic({
+                  geometry: result.location,
+                  symbol: {
+                    type: "simple-marker",
+                    color: "#007BFF", // Blue for places
+                    size: "10px",
+                    outline: {
+                      color: "#FFFFFF",
+                      width: 2
+                    }
+                  },
+                  attributes: result.attributes,
+                  popupTemplate: {
+                    title: "{PlaceName}",
+                    content: "{Place_addr}"
+                  }
+                });
+                mapView.graphics.add(pointGraphic);
+              });
+            });
+          }
+
+          reactiveUtils.when(() => mapView.stationary, () => {
+            findPlaces(select.value, mapView.center);
+            
+          });
+
+          select.addEventListener("change", (event) => {
+            findPlaces(event.target.value, mapView.center);
+          });
+
+
+          // Add event listener for geolocation button
+          document.getElementById("geolocate-btn").addEventListener("click", function() {
+            if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(function(position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+                
+                // Center the map to the current location
+                mapView.goTo({
+                  center: [longitude, latitude],
+                  zoom: 15
+                });
+
+                // Add a marker symbol for the location
+                const point = new Point({
+                  longitude: longitude,
+                  latitude: latitude
+                });
+
+                const pointSymbol = new PictureMarkerSymbol({
+                  url: "https://static.arcgis.com/images/Symbols/Shapes/BluePin1LargeB.png",  // Blue location pin icon
+                  width: "40px",  // Adjust the width of the image
+                  height: "40px"  // Adjust the height of the image
+                });
+
+                // Create a graphic for the point and add it to the map
+                const pointGraphic = new Graphic({
+                  geometry: point,
+                  symbol: pointSymbol
+                });
+
+                // Add the graphic to the view's graphics collection
+                geoLocationLayer.add(pointGraphic);
+              }, function(error) {
+                alert("Error occurred while getting location: " + error.message);
+              });
+            } else {
+              alert("Geolocation is not supported by this browser.");
+            }
+          });
+
+
+        } catch (error) {
+          console.error("ERROR LOADING THE MAP: ", error);
+        }
+      };
+
+      // Initialize the map when the page loads
+      initializeMap();
+
+    });
+  </script>
+</body>
+</html>

@@ -27,7 +27,13 @@
     </div>
 
     <!-- Welcome Message -->
-    <h1>Welcome to WHERETO?</h1>
+    <h1>
+        <% if (username) { %>
+            Welcome to WHERETO?, <%= username %>!
+        <% } else { %>
+            Welcome to WHERETO?
+        <% } %>
+    </h1>
 
     <!-- Main Content -->
     <div class="content">
@@ -43,7 +49,6 @@
         <!-- Buttons -->
         <div class="buttons">
             <% if (username) { %>
-                <p>Logged in as: <%= username %> (<%= email %>)</p>
                 <a href="/profile">
                     <button class="btn">Go to Profile</button>
                 </a>

@@ -1,0 +1,126 @@
+/* Stilizarea containerului hartii */
+/* Aplică fundalul pentru întreaga pagină */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Copperplate';
+}
+
+body, html {
+    height: 100%;
+}
+
+body {
+    background: url('background2.jpg') no-repeat center center;
+    background-size: 100%;
+    height: 100%;
+    width: auto;
+    max-width: 90%;
+    padding: 20px;
+    border-radius: 15px;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+#map-container {
+    height: 90vh;
+    width: 100%;
+    padding: 80px;
+    position: relative;
+    display: flex;
+    overflow: hidden;  /* Ascunde bara de scroll */
+    box-sizing: border-box;  /* Include padding-ul în dimensiunile totale */
+    border: 5px solid #4CAF50;  /* Bordură verde în jurul hărții */
+    border-radius: 15px;  /* Colțuri rotunjite */
+    background-color: #f9f9f9;  /* Culoare de fundal pentru container */
+}
+  
+  /* Stilizarea butonului geolocației */
+#geolocate-btn {
+    position: absolute;
+    bottom: 20px;
+    left: 25px;
+    padding: 12px 20px; /* spațiu mai mult pentru buton */
+    background-color: #4CAF50; /* Culoare de fundal verde */
+    color: white; /* Text alb */
+    border: none; /* Fără margine */
+    border-radius: 8px; /* Colțuri rotunjite */
+    cursor: pointer; /* Cursor schimbat la pointer */
+    font-size: 16px; /* Dimensiune text */
+    font-family: 'Copperplate'; /* Font */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2), 0px 2px 4px rgba(0, 0, 0, 0.1); /* Umbra butonului */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Tranziție pentru hover */
+}
+  
+#geolocate-btn:hover {
+    background-color: #45a049; /* Culoare mai închisă la hover */
+    transform: scale(1.05); /* Mărire la hover */
+}
+  
+#geolocate-btn:active {
+    background-color: #397d3c; /* Culoare la click */
+}
+  
+/* Hamburger Menu */
+.hamburger-menu {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+}
+
+.hamburger-icon {
+    font-size: 45px;
+    color: rgb(196, 35, 185);
+    background-color: transparent;
+    border: darkgray;
+    cursor: pointer;
+    padding: 10px;
+    display: block;
+}
+
+.menu {
+    display: none;
+    position: relative;
+    left: 0;
+    background-color: #333;
+    width: 150%;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.menu.show {
+    display: block;
+}
+
+.menu a {
+    display: block;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.menu a:hover {
+    background-color: #575757;
+}
+
+/* Button */
+.btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 25px;
+    background: #6c63ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: Copperplate;
+}
+
+.btn:hover {
+    background: #574bdb;
+}

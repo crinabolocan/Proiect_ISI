@@ -1,4 +1,3 @@
-<!-- views/profile.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,35 +9,80 @@
 <body>
     <!-- Hamburger Menu -->
     <div class="hamburger-menu">
-    <button class="hamburger-icon" onclick="toggleMenu()">&#9776;</button> <!-- 3 puncte -->
-    <div id="menu" class="menu">
-        <a href="/" class="btn">Main Page</a>
+        <button class="hamburger-icon" onclick="toggleMenu()">&#9776;</button>
+        <div id="menu" class="menu">
+            <a href="/" class="btn">Main Page</a>
+        </div>
     </div>
-    </div>
-    <div class="container">
+
+    <!-- Layout principal împărțit pe verticală -->
+    <div class="main-container">
+        <!-- Profil utilizator în partea stângă -->
         <div class="profile-container">
             <h1>Welcome, <%= username %>!</h1>
             <p>Email: <%= email %></p>
             <button onclick="window.location.href='/logout'">Logout</button>
+            <button class="images-button" onclick="window.location.href='/images'">Go to Images</button>
+            <button class="map-button" onclick="window.location.href='/map'">Go to Map</button>
+        </div>
+
+        <!-- Lista de imagini favorite în partea dreaptă -->
+        <div class="favorites-container">
+            <h2>Your Favorite Images</h2>
+            <div class="favorites-list">
+                <% favoriteImages.forEach(image => { %>
+                    <div class="favorite-item">
+                        <img src="<%= image %>" alt="Favorite Image">
+                        <button class="remove-favorite" onclick="removeFavorite('<%= image %>', this)">
+                            <i class="fas fa-heart"></i> Remove from Favorites
+                        </button>
+                    </div>
+                <% }) %>
+            </div>
+            
         </div>
     </div>
+
     <script>
         // Funcție pentru a deschide/închide meniul
         function toggleMenu() {
             const menu = document.getElementById('menu');
             menu.classList.toggle('show');
         }
-    
-        // Închide meniul dacă se face clic în afacerea acestuia
+
+        // Închide meniul dacă se face clic în afara acestuia
         document.addEventListener('click', function(event) {
             const menu = document.getElementById('menu');
             const hamburgerIcon = document.querySelector('.hamburger-icon');
-    
-            // Dacă clicul nu a fost pe meniul hamburger sau pe meniul în sine
+
             if (!menu.contains(event.target) && !hamburgerIcon.contains(event.target)) {
                 menu.classList.remove('show');
             }
         });
+        
+        function removeFavorite(imageUrl) {
+            fetch('/remove-favorite', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    imageUrl: imageUrl
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Image removed from favorites');
+                    location.reload(); // Reîncarcă pagina pentru a actualiza lista de favorite
+                } else {
+                    alert('Failed to remove image');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error removing image');
+            });
+        }
     </script>
 </body>
 </html>

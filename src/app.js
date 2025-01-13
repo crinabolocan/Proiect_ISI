@@ -139,14 +139,34 @@ app.post('/login', (req, res) => {
 });
 
 // Pagina de profil
+// app.get('/profile', (req, res) => {
+//     if (!req.session.user) {
+//         return res.redirect('/login'); // Dacă nu este autentificat, redirecționează la login
+//     }
+
+//     const user = req.session.user;
+//     res.render('profile', { username: user.username, email: user.email });
+// });
+
 app.get('/profile', (req, res) => {
     if (!req.session.user) {
         return res.redirect('/login'); // Dacă nu este autentificat, redirecționează la login
     }
 
     const user = req.session.user;
-    res.render('profile', { username: user.username, email: user.email });
+
+    // Obține imaginile favorite din baza de date
+    db.query('SELECT image_url FROM favorites WHERE user_id = ?', [user.id], (err, results) => {
+        if (err) {
+            console.error('Error fetching favorite images:', err.message);
+            return res.status(500).send('Error fetching favorite images');
+        }
+
+        const favoriteImages = results.map(row => row.image_url);  // Extrage URL-urile imaginilor
+        res.render('profile', { username: user.username, email: user.email, favoriteImages: favoriteImages });
+    });
 });
+
 
 app.get('/logout', (req, res) => {
     // Șterge sesiunea utilizatorului
@@ -168,6 +188,104 @@ app.get('/logged-out', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
 });
+
+// Pagina cu imagini
+// app.get('/images', (req, res) => {
+//     if (!req.session.user) {
+//         return res.redirect('/login'); // Redirecționează la login dacă nu este autentificat
+//     }
+
+//     const user = req.session.user;
+//     res.render('images', { username: user.username });
+// });
+
+import axios from 'axios';
+
+// Pagina cu imagini
+// Pagina cu imagini
+app.get('/images', async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login'); // Redirecționează la login dacă nu este autentificat
+    }
+
+    const page = req.query.page || 1;  // Paginarea începe de la 1
+    const imagesPerPage = 9; // Numărul de imagini pe care dorești să le afișezi per pagină
+
+    try {
+        const response = await axios.get('https://api.unsplash.com/photos/random', {
+            params: {
+                client_id: 'IKohYhP-ahZNDJBE_691JbX9hoq8XxGcAOeTLuZ4iYw', // Înlocuiește cu cheia ta API
+                count: imagesPerPage * page // Numărul total de imagini de obținut
+            }
+        });
+
+        const images = response.data.map(image => image.urls.small); // Preia doar URL-ul imaginii
+        const user = req.session.user;
+        console.log("user", user);
+        res.render('images', { username: user.username, images: images, page: page });
+    } catch (err) {
+        console.error('Error fetching images:', err.message);
+        res.status(500).send('Internal server error');
+    }
+});
+
+
+// Adaugă imagine la favorite
+app.post('/add-favorite', (req, res) => {
+    const { imageUrl } = req.body;
+    const userId = req.session.user.id;
+
+    if (!imageUrl) {
+        return res.status(400).send('Image URL is required');
+    }
+
+    // Generează locație random
+    const latitude = (Math.random() * 180 - 90).toFixed(8); // Între -90 și 90
+    const longitude = (Math.random() * 360 - 180).toFixed(8); // Între -180 și 180
+
+    // Salvează imaginea și locația în baza de date
+    db.query(
+        'INSERT INTO favorites (user_id, image_url, latitude, longitude) VALUES (?, ?, ?, ?)',
+        [userId, imageUrl, latitude, longitude],
+        (err, results) => {
+            if (err) {
+                console.error('Error adding favorite image:', err.message);
+                return res.status(500).send('Error adding favorite');
+            }
+            res.status(200).send('Image added to favorites');
+        }
+    );
+});
+
+
+// Endpoint pentru a elimina imaginea din favorite
+app.post('/remove-favorite', (req, res) => {
+    const { imageUrl } = req.body;  // URL-ul imaginii trimis din frontend
+    const userId = req.session.user.id; // ID-ul utilizatorului din sesiune
+
+    if (!imageUrl) {
+        return res.status(400).send('Image URL is required');
+    }
+
+    // Șterge imaginea din tabelul favorites
+    db.query('DELETE FROM favorites WHERE user_id = ? AND image_url = ?', [userId, imageUrl], (err, results) => {
+        if (err) {
+            console.error('Error removing favorite image:', err.message);
+            return res.status(500).send('Error removing favorite');
+        }
+        res.status(200).send('Image removed from favorites');
+    });
+});
+
+app.get('/map', (req, res) => {
+    res.render('map');
+    // if (req.session.user) {
+    //     const user = req.session.user;
+    // } else {
+    //     res.redirect('/logout'); // Dacă nu este autentificat, redirecționează la login
+    // }
+});
+
 
 import router from './routes/index.js';
 // const router = require("./routes");

@@ -1,46 +1,43 @@
+
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: Copperplate;
     margin: 0;
     padding: 0;
-    background-color: #f0f2f5; /* culoare de fundal mai deschisă */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    background-color: #f0f2f5;
+    height: 100%;
 }
-
 
 /* Hamburger Menu */
 .hamburger-menu {
     position: fixed;
     top: 20px;
     left: 20px;
-    z-index: 1000; /* Asigură-te că meniul este deasupra altor elemente */
+    z-index: 1000;
 }
 
 .hamburger-icon {
     font-size: 45px;
     color: rgb(196, 35, 185);
     background-color: transparent;
-    border:darkgray;
-    cursor:pointer;
+    border: darkgray;
+    cursor: pointer;
     padding: 10px;
     display: block;
 }
 
 .menu {
-    display: none; /* Meniul este ascuns inițial */
-    position: absolute;
-    top: 50px;
+    display: none;
+    position: relative;
     left: 0;
-    background-color: #333; /* Fundalul meniului */
-    width: 150px; /* Lățimea meniului */
+    background-color: #333;
+    width: 100%;
     border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Umbră pentru efect vizual */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .menu.show {
-    display: block; /* Meniul devine vizibil când este activat */
+    display: block;
 }
 
 .menu a {
@@ -55,38 +52,59 @@ body {
     background-color: #575757;
 }
 
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* Button */
+.btn {
     width: 100%;
-    height: 100%;
-    padding: 20px;
+    padding: 12px;
+    font-size: 25px;
+    background: #6c63ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: Copperplate;
 }
 
+.btn:hover {
+    background: #574bdb;
+}
+
+/* Layout principal împărțit pe verticală */
+.main-container {
+    display: flex;
+    height: 100vh; /* Înălțime totală a paginii */
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Profil utilizator (partea stângă) */
 .profile-container {
     background: #ffffff;
     padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    max-width: 400px; /* Lățimea maximă pentru un aspect mai compact */
+    border-right: 1px solid #ddd;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    background: url('background2.jpg') repeat center;
+    position: sticky;
+    top: 0;
     width: 100%;
+    flex: 0 0 30%;
 }
 
-h1 {
-    color: #333;
-    font-size: 2em;
+.profile-container h1 {
+    display: flex;
+    color: #ffffff;
+    font-size: 55px;
+    margin-bottom: 30px;
+    padding-top: 90px;
+}
+
+.profile-container p {
+    font-size: 25px;
+    color: #ffffff;
     margin-bottom: 20px;
 }
 
-p {
-    font-size: 1.2em;
-    color: #666;
-    margin-bottom: 20px;
-}
-
-button {
+.profile-container button {
     background-color: #6c63ff;
     color: white;
     border: none;
@@ -97,10 +115,79 @@ button {
     transition: background-color 0.3s ease;
 }
 
-button:hover {
+.profile-container button:hover {
     background-color: #574bdb;
 }
 
-button:focus {
-    outline: none;
+.profile-container .images-button {
+    background-color: #ff8c00;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.profile-container .images-button:hover {
+    background-color: #ff6a00;
+}
+
+
+/* Lista de imagini favorite (partea dreaptă) */
+.favorites-container {
+    padding: 40px;
+    flex-grow: 1; /* Ocupă restul spațiului */
+    overflow-y: auto; /* Permite scroll dacă imaginile depășesc spațiul */
+}
+
+.favorites-container h2 {
+    color: #333;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+.favorites-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.favorite-item {
+    text-align: center;
+    width: calc(33.333% - 20px); /* Trei imagini pe rând */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f9f9f9;
+}
+
+.favorite-item img {
+    width: 100%;
+    display: block;
+    border-bottom: 1px solid #ddd; /* Linie sub imagine pentru separare */
+}
+
+.favorite-item .remove-favorite {
+    margin-top: 10px; /* Spațiu între imagine și buton */
+    background-color: #6c63ff;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.favorite-item .remove-favorite:hover {
+    color: rgb(0, 0, 0);
+}
+
+/* Efect când butonul este apăsat */
+.favorite-item .remove-favorite.clicked {
+    color: white;
+    opacity: 0;
 }
