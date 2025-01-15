@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Map with ArcGIS</title>
+
+   <!-- Load Calcite components from CDN -->
+   <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.13.2/calcite.css" />
+   <script type="module" src="https://js.arcgis.com/calcite-components/2.13.2/calcite.esm.js"></script>
   <!-- Include ArcGIS Styles -->
   <link rel="stylesheet" href="https://js.arcgis.com/4.24/esri/themes/light/main.css">
   <link rel="stylesheet" href="style_map.css">
@@ -24,6 +28,20 @@
 
 
   <button id="geolocate-btn">I'm Here!</button>
+
+
+  <calcite-panel heading="Directions">
+
+    <calcite-notice id="directions-notice" icon="driving-distance" open>
+      <div slot="message">Click on the map in two different locations to solve the route.</div>
+    </calcite-notice>
+
+    <div id="directions-container"></div>
+
+  </calcite-panel>
+
+
+
   <!-- Include the ArcGIS API -->
   <script src="https://js.arcgis.com/4.24/"></script>
 
@@ -55,12 +73,15 @@
       "esri/symbols/SimpleMarkerSymbol",
       "esri/symbols/PictureMarkerSymbol",
       "esri/rest/locator",
-      "esri/core/reactiveUtils"
-    ], function(esriConfig, WebMap, MapView, GraphicsLayer, Graphic, Point, SimpleMarkerSymbol, PictureMarkerSymbol, Locator, reactiveUtils) {
+      "esri/core/reactiveUtils",
+      "esri/layers/FeatureLayer",
+      "esri/symbols/SimpleLineSymbol"
+    ], function(esriConfig, WebMap, MapView, GraphicsLayer, Graphic, Point, SimpleMarkerSymbol, PictureMarkerSymbol, Locator, reactiveUtils, FeatureLayer, SimpleLineSymbol) {
 
       // Set the API key
       esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurHTsJQpcDKEq34qs1KboR7ROzBxg9Ji1qhoRpyID_b3LhnnR36uXNGvR19UH-CCr5LINEBSM7uinPv6zbJiwubIC7vFYy48UVUSs_FieWxQs--DmcQPM9Reu1I2Igb4HXkUTK6eTA2MDfPJO-QVgFwk3i5ad5xaeRRXUUw1ISFVGNTPIYs4F2JoAIUYLiCqF89pwu6ZQiTpF6UsqGFV151o.AT1_dTFGHSMJ";
-
+      const routeUrl = "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
+      
       // Initialize the map
       const initializeMap = () => {
         try {
@@ -73,114 +94,214 @@
           const mapView = new MapView({
             container: "map-container", // ID of the HTML element
             map: webMap,
-            center: [-118.73682450024377, 34.07817583063242], // Longitude, Latitude
-            zoom: 10,
+            center: [9.140556, 48.690833], // Longitude, Latitude for Europe
+            zoom: 4,
           });
 
           // Add a GraphicsLayer to the map
           const geoLocationLayer = new GraphicsLayer();
           const graphicsLayer = new GraphicsLayer();
+          const FilterLayer = new GraphicsLayer();
+
           webMap.add(graphicsLayer);
           webMap.add(geoLocationLayer);
+          webMap.add(FilterLayer);
 
           favoriteImages.forEach(image => {
+            mapView.graphics.removeAll();
             const point = new Point({
               longitude: image.long,
               latitude: image.lat
             });
 
             const simpleMarkerSymbol = {
-            type: "simple-marker",
-            color: [226, 119, 40], // Orange
-            outline: {
-              color: [255, 255, 255], // White
-              width: 1
-            }
-          };
-
-            const pointGraphic = new Graphic({
-              geometry: point,
-              symbol: simpleMarkerSymbol,
-              attributes: {
-                imageUrl: image.imageUrl,
-                description: image.description
-              },
-              popupTemplate: {
-                title: "Favorite Image",
-                content: `
-                  <img src="${image.imageUrl}" alt="Favorite" style="width: 100px; height: auto;">
-                  <p>${image.description}</p>
-                `
+              type: "simple-marker",
+              style: "diamond", // Formă diamant
+              color: [0, 112, 255, 0.8], // Albastru cu transparență
+              size: "16px", // Dimensiune mai mare
+              outline: {
+                color: [0, 0, 0], // Contur negru
+                width: 1.5 // Grosimea conturului
               }
-            });
+
+            };
+
+
+            // ASTA E ALA BUN
+             const pointGraphic = new Graphic({
+               geometry: point,
+               symbol: simpleMarkerSymbol,
+               attributes: {
+               imageUrl: image.imageUrl,
+               review: image.review,
+            //     done: image.done // Add the "done" status to the attributes
+               },
+               popupTemplate: {
+                 title: "Favorite Image",
+                 content: `
+                   <img src="${image.imageUrl}" alt="Favorite" style="width: 100px; height: auto;">
+                   ${image.review ? `<p><strong>Description:</strong> ${image.review}</p>` : ''}
+                 `
+               }
+             });
 
             // Add the graphic to the view's graphics collection
             graphicsLayer.add(pointGraphic);
           });
 
 
+       
+
           const locatorUrl = "http://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer";
 
-          const places = ["Choose a place type...", "Parks and Outdoors", "Coffee shop", "Gas station", "Food", "Hotel"];
-
+          const distances = ["Choose a distance...", "<1km", "<5km", "<10km", "<50km", "<1000km", "All"];
           const select = document.createElement("select");
           select.setAttribute("class", "esri-widget esri-select");
           select.setAttribute("style", "width: 175px; font-family: 'Avenir Next W00'; font-size: 1em");
 
-          places.forEach((place) => {
+          distances.forEach((distance) => {
             const option = document.createElement("option");
-            option.value = place;
-            option.innerHTML = place;
+            option.value = distance;
+            option.innerHTML = distance;
             select.appendChild(option);
           });
 
           mapView.ui.add(select, "top-right");
 
-          function findPlaces(category, pt) {
-            if (category === "Choose a place type...") {
-              mapView.graphics.removeAll();
-              return;
+          function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371e3; // Raza Pământului în metri
+            const φ1 = (lat1 * Math.PI) / 180;
+            const φ2 = (lat2 * Math.PI) / 180;
+            const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+            const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+
+            const a =
+              Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+              Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+            return R * c; // Distanța în metri
+          }
+
+          function findPlaces(category, userLocation) {
+
+            let maxDistance = 0;
+            switch (category) {
+              case "<1km":
+                maxDistance = 1000;
+                break;
+              case "<5km":
+                maxDistance = 5000;
+                break;
+              case "<10km":
+                maxDistance = 10000;
+                break;
+              case "<50km":
+                maxDistance = 50000;
+                break;
+              case "<1000km": 
+                maxDistance = 1000000;
+                break;
+              case "All":
+                maxDistance = Infinity;
+                break;
+              default:
+                return;
             }
 
-            locator.addressToLocations(locatorUrl, {
-              location: pt,
-              categories: [category],
-              maxLocations: 25,
-              outFields: ["Place_addr", "PlaceName"]
-            }).then((results) => {
-              mapView.graphics.removeAll();
+            
+            favoriteImages.forEach((image) => {
+              const distance = calculateDistance(
+                userLocation.latitude,
+                userLocation.longitude,
+                image.lat,
+                image.long
+              );
 
-              results.forEach((result) => {
+              const point = new Point({
+                longitude: image.long,
+                latitude: image.lat
+              });
+
+              if (distance <= maxDistance) {
                 const pointGraphic = new Graphic({
-                  geometry: result.location,
+                  geometry: point,
                   symbol: {
                     type: "simple-marker",
-                    color: "#007BFF", // Blue for places
+                    color: "#007BFF", // albastru pentru locații
                     size: "10px",
                     outline: {
                       color: "#FFFFFF",
                       width: 2
                     }
                   },
-                  attributes: result.attributes,
+                  attributes: { ...image, Distance: distance },
                   popupTemplate: {
-                    title: "{PlaceName}",
-                    content: "{Place_addr}"
+                    title: "Favorite Image",
+                    content: `
+                      <img src="${image.imageUrl}" alt="Favorite" style="width: 100px; height: auto;">
+                      <p>${image.review}</p>
+                      <p>Distance: ${Math.round(distance)} meters</p>
+                    `
                   }
                 });
-                mapView.graphics.add(pointGraphic);
-              });
+
+                mapView.graphics.add(pointGraphic); // Adaugă graficul pe hartă
+              }
             });
+          };
+
+
+          function getUserLocation(callback) {
+            if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(
+                (position) => {
+                  const pt = {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                  };
+                  callback(pt);
+                },
+                (error) => {
+                  console.error("Error getting user location:", error.message);
+                  alert("Unable to retrieve your location.");
+                }
+              );
+            } else {
+              alert("Geolocation is not supported by this browser.");
+            }
           }
 
           reactiveUtils.when(() => mapView.stationary, () => {
-            findPlaces(select.value, mapView.center);
-            
+            getUserLocation((pt) => {
+              if (select.value === "Choose a distance...") {
+                mapView.graphics.removeAll();
+                webMap.add(graphicsLayer);
+                webMap.remove(FilterLayer);
+              } else {
+                mapView.graphics.removeAll();
+                webMap.add(FilterLayer);
+                findPlaces(select.value, pt);
+                webMap.remove(graphicsLayer);
+              }
+            });
           });
 
           select.addEventListener("change", (event) => {
-            findPlaces(event.target.value, mapView.center);
+            getUserLocation((pt) => {
+              if (select.value === "Choose a distance...") {
+                mapView.graphics.removeAll();
+                webMap.add(graphicsLayer);
+                webMap.remove(FilterLayer);
+              } else {
+                mapView.graphics.removeAll();
+                webMap.add(FilterLayer);
+                findPlaces(select.value, pt);
+                webMap.remove(graphicsLayer);
+              }
+            });
           });
+
 
 
           // Add event listener for geolocation button

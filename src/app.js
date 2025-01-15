@@ -9,6 +9,7 @@ import path from 'path';
 import bcrypt from 'bcrypt';
 import session from 'express-session';
 
+
 // Creează __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -202,7 +203,6 @@ app.listen(PORT, () => {
 import axios from 'axios';
 
 // Pagina cu imagini
-// Pagina cu imagini
 app.get('/images', async (req, res) => {
     if (!req.session.user) {
         return res.redirect('/login'); // Redirecționează la login dacă nu este autentificat
@@ -230,8 +230,7 @@ app.get('/images', async (req, res) => {
 });
 
 
-// Adaugă imagine la favorite
-app.post('/add-favorite', (req, res) => {
+app.post('/add-favorite', async (req, res) => {
     const { imageUrl } = req.body;
     const userId = req.session.user.id;
 
@@ -239,23 +238,36 @@ app.post('/add-favorite', (req, res) => {
         return res.status(400).send('Image URL is required');
     }
 
-    // Generează locație random
-    const latitude = (Math.random() * 180 - 90).toFixed(8); // Între -90 și 90
-    const longitude = (Math.random() * 360 - 180).toFixed(8); // Între -180 și 180
+    // Limitele Europei
+    const minLatitude = 36.0153;  // Sud
+    const maxLatitude = 71.1725; // Nord
+    const minLongitude = -9.4983; // Vest
+    const maxLongitude = 60.0000; // Est
 
-    // Salvează imaginea și locația în baza de date
-    db.query(
-        'INSERT INTO favorites (user_id, image_url, latitude, longitude) VALUES (?, ?, ?, ?)',
-        [userId, imageUrl, latitude, longitude],
-        (err, results) => {
-            if (err) {
-                console.error('Error adding favorite image:', err.message);
-                return res.status(500).send('Error adding favorite');
+    // Generare coordonate random în interiorul Europei
+    const latitude = (Math.random() * (maxLatitude - minLatitude) + minLatitude).toFixed(8);
+    const longitude = (Math.random() * (maxLongitude - minLongitude) + minLongitude).toFixed(8);
+
+    try {
+        // Salvează coordonatele în baza de date
+        db.query(
+            'INSERT INTO favorites (user_id, image_url, latitude, longitude) VALUES (?, ?, ?, ?)',
+            [userId, imageUrl, latitude, longitude],
+            (err, results) => {
+                if (err) {
+                    console.error('Error adding favorite image:', err.message);
+                    return res.status(500).send('Error adding favorite');
+                }
+                res.status(200).send('Image added to favorites');
             }
-            res.status(200).send('Image added to favorites');
-        }
-    );
+        );
+    } catch (err) {
+        console.error('Error processing request:', err.message);
+        return res.status(500).send('Error processing request');
+    }
 });
+
+
 
 
 // Endpoint pentru a elimina imaginea din favorite

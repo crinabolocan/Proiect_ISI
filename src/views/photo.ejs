@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photos</title>
+</head>
+<body>
+    <h1>Photo Gallery</h1>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+        <% photos.forEach(photo => { %>
+            <div>
+                <img src="<%= photo.photo_image_url %>" alt="<%= photo.photo_description %>" style="width: 100%; height: auto;">
+                <p><%= photo.photo_description %></p>
+                <p>Photographer: <%= photo.photographer_username %></p>
+            </div>
+        <% }) %>
+    </div>
+</body>
+</html>
