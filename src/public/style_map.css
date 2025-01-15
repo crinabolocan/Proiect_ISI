@@ -150,3 +150,98 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     margin-bottom: 10px;
  }
+
+
+/* Hamburger Menu */
+.hamburger-menu {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+}
+
+.hamburger-icon {
+    font-size: 45px;
+    color: rgb(196, 35, 185);
+    background-color: transparent;
+    border: darkgray;
+    cursor: pointer;
+    padding: 10px;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.hamburger-icon:hover {
+    transform: rotate(90deg); /* Efect de rotație când se face hover */
+}
+
+.menu {
+    display: none;
+    position: relative;
+    left: 0;
+    background-color: #333;
+    width: 100%;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.menu.show {
+    display: block;
+}
+
+.menu a {
+    display: block;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.menu a:hover {
+    background-color: #575757;
+}
+
+
+  
+  .popup-content {
+    font-family: 'Copperplate';
+    font-size: 30px;
+    color: #333;
+    line-height: 1.5;
+  }
+  
+  .popup-content img {
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+  }
+  
+  .popup-content p {
+    margin: 15px 0;
+  }
+  
+  .popup-content strong {
+    color: #0078d7;
+  }
+
+  select.esri-select {
+    border: 2px solid #0078d7;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 26px;
+    color: #333;
+    background-color: #fff;
+    transition: border-color 0.3s;
+  }
+  
+  select.esri-select:hover {
+    border-color: #005a9e;
+  }
+  
+  select.esri-select:focus {
+    outline: none;
+    border-color: #ffcc00;
+  }
+  
+  

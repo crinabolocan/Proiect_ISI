@@ -3,39 +3,47 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f0f2f5;
+    transition: background-color 0.3s ease;
 }
+
 
 /* Hamburger Menu */
 .hamburger-menu {
     position: fixed;
     top: 20px;
     left: 20px;
-    z-index: 1000;
+    z-index: 1000; /* Asigură-te că meniul este deasupra altor elemente */
+    animation: fadeIn 1s ease-out;
 }
 
 .hamburger-icon {
     font-size: 45px;
     color: rgb(196, 35, 185);
     background-color: transparent;
-    border: darkgray;
-    cursor: pointer;
+    border:darkgray;
+    cursor:pointer;
     padding: 10px;
     display: block;
+    transition: transform 0.3s ease;
+}
+.hamburger-icon:hover {
+    transform: rotate(90deg); /* Efect de rotație când se face hover */
 }
 
 
 .menu {
-    display: none;
-    position: relative;
+    display: none; /* Meniul este ascuns inițial */
+    position: absolute;
     left: 0;
-    background-color: #333;
-    width: 100%;
+    background-color: #333; /* Fundalul meniului */
+    width: 150px; /* Lățimea meniului */
     border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Umbră pentru efect vizual */
+    animation: slideInMenu 0.5s ease-out;
 }
 
 .menu.show {
-    display: block;
+    display: block; /* Meniul devine vizibil când este activat */
 }
 
 .menu a {
@@ -44,6 +52,7 @@ body {
     padding: 10px 20px;
     text-decoration: none;
     font-size: 18px;
+    transition: background-color 0.3s ease;
 }
 
 .menu a:hover {
@@ -61,15 +70,18 @@ body {
     border-radius: 5px;
     cursor: pointer;
     font-family: Copperplate;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .btn:hover {
     background: #574bdb;
+    transform: scale(1.1); /* Butonul se mărește la hover */
 }
 
 .images-container {
     padding: 40px;
     text-align: center;
+    transition: padding 0.3s ease;
 }
 
 .images-container h1 {
@@ -83,6 +95,7 @@ body {
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
+    animation: fadeIn 1s ease-out;
 }
 
 .image-item {
@@ -92,7 +105,14 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background: #fff;
-    position: relative;  /* Poziționează relativ pentru a plasa inima în colț */
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+}
+
+.image-item:hover {
+    transform: translateY(-10px) scale(1.05); /* Deplasează imaginea în sus și o mărește ușor */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Adaugă o umbră mai pronunțată */
+    opacity: 0.9; /* Căderea transparenței */
 }
 
 .image-item img {
@@ -100,6 +120,11 @@ body {
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 0.5s ease; /* Adaugă o tranziție pentru imagine */
+}
+
+.image-item:hover img {
+    transform: scale(1.1); /* Mărește ușor imaginea pentru un efect de zoom */
 }
 
 #heaart {
@@ -175,11 +200,12 @@ body {
     font-size: 1.1em;
     cursor: pointer;
     margin-top: 20px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .back-button:hover {
     background-color: #574bdb;
+    transform: translateY(-5px); /* Mișcare ușoară când hover */
 }
 
 
@@ -191,9 +217,56 @@ body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .image-item button:hover {
     background-color: #574bdb;
+    transform: scale(1.1);
+}
+
+.load-more {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.load-more a {
+    text-decoration: none; /* Elimină sublinierea linkului */
+}
+
+.load-more button {
+    background-color: #6c63ff; /* Culoarea principală a butonului */
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 30px; /* Formă rotunjită */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Umbra inițială */
+}
+
+.load-more button:hover {
+    background-color: #574bdb; /* Culoare mai închisă la hover */
+    transform: translateY(-5px); /* Efect de mișcare în sus */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Umbra mai pronunțată */
+}
+
+.load-more button:active {
+    transform: translateY(2px); /* Ușor apăsat la click */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Umbra mai subtilă */
+}
+
+
+/* Animație Fade In */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

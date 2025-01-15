@@ -12,6 +12,10 @@
         <button class="hamburger-icon" onclick="toggleMenu()">&#9776;</button>
         <div id="menu" class="menu">
             <a href="/" class="btn">Main Page</a>
+            <a href="/images" class="btn">Images</a>
+            <a href="/map" class="btn">Map</a>
+            <a href="/profile" class="btn">Profile</a>
+            <a href="/logout" class="btn">Logout</a>
         </div>
     </div>
 
@@ -36,6 +40,7 @@
                         <p>My review: </p>
                         <textarea id="review-<%= image.image_url %>" placeholder="Add your review..."><%= image.review || '' %></textarea>
                         <button class="save-review" onclick="saveReview('<%= image.image_url %>')">Save Review</button>
+                        <button class="mark-done" onclick="markDone('<%= image.image_url %>')">Mark as Done</button>
                         <button class="remove-favorite" onclick="removeFavorite('<%= image.image_url %>', this)">
                             <i class="fas fa-heart"></i> Remove from Favorites
                         </button>
@@ -43,12 +48,97 @@
                 <% }) %>
             </div>
         </div>
-        
+
+        <!-- Lista de locații vizitate în partea dreaptă -->
+        <div class="visited-container">
+            <h2>Visited Locations</h2>
+            <div class="visited-list">
+                <% visitedImages.forEach(image => { %>
+                    <div class="visited-item">
+                        <img src="<%= image.image_url %>" alt="Visited Image">
+                        <p>Review: <%= image.review || 'No review' %></p>
+                        <button class="mark-undone" onclick="markUndone('<%= image.image_url %>')">Mark as Undone</button>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+
     </div>
 
     
 
     <script>
+        function markUndone(imageUrl) {
+            fetch('/mark-undone', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ imageUrl: imageUrl })
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Image moved back to favorites');
+                    location.reload(); // Reîncarcă pagina pentru a actualiza lista de favorite
+                } else {
+                    alert('Failed to move image back');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error marking image as undone');
+            });
+        }
+        
+        
+        
+        function markDone(imageUrl) {
+            fetch('/mark-done', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ imageUrl: imageUrl })
+            })
+            .then(response => {
+                console.log(response);
+                if (response.ok) {
+                    alert('Image marked as done');
+                    location.reload(); // Reîncarcă pagina pentru a actualiza secțiunile
+                } else {
+                    alert('Failed to mark image as done');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error marking image as done');
+            });
+        }
+        
+        function toggleDone(imageUrl, button) {
+            fetch('/toggle-done', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    imageUrl: imageUrl
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    const isDone = button.innerText === 'Unmark as Done';
+                    button.innerText = isDone ? 'Mark as Done' : 'Unmark as Done';
+                } else {
+                    alert('Failed to update status');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error updating status');
+            });
+        }
+        
         // Funcție pentru a deschide/închide meniul
         function toggleMenu() {
             const menu = document.getElementById('menu');

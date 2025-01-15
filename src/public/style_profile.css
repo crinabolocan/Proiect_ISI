@@ -1,11 +1,17 @@
 
+/* Stilizare generală pentru pagină */
+*{
+    box-sizing: border-box;
+    font-family: 'Copperplate';
+}
 
 body {
     font-family: Copperplate;
     margin: 0;
     padding: 0;
-    background-color: #f0f2f5;
+    background: linear-gradient(135deg, #f0f2f5, #e0e6ef); /* Fundal cu gradient */
     height: 100%;
+    transition: background 0.5s ease;
 }
 
 /* Hamburger Menu */
@@ -24,6 +30,11 @@ body {
     cursor: pointer;
     padding: 10px;
     display: block;
+    transition: transform 0.3s ease;
+}
+
+.hamburger-icon:hover {
+    transform: rotate(90deg); /* Efect de rotație când se face hover */
 }
 
 .menu {
@@ -46,6 +57,7 @@ body {
     padding: 10px 20px;
     text-decoration: none;
     font-size: 18px;
+    transition: background-color 0.3s ease;
 }
 
 .menu a:hover {
@@ -75,6 +87,7 @@ body {
     height: 100vh; /* Înălțime totală a paginii */
     width: 100%;
     overflow: hidden;
+    transition: transform 0.3s ease;
 }
 
 /* Profil utilizator (partea stângă) */
@@ -87,21 +100,22 @@ body {
     position: sticky;
     top: 0;
     width: 100%;
-    flex: 0 0 30%;
+    flex: 0 0 15%;
+    transition: background 0.3s ease;
 }
 
 .profile-container h1 {
-    display: flex;
     color: #ffffff;
     font-size: 55px;
-    margin-bottom: 30px;
     padding-top: 90px;
+    animation: slideInLeft 1s ease-out; /* Animație pentru titlu */
 }
 
 .profile-container p {
     font-size: 25px;
     color: #ffffff;
-    margin-bottom: 20px;
+    align-items: end;
+    padding-top: 100px;
 }
 
 .profile-container button {
@@ -112,7 +126,7 @@ body {
     border-radius: 5px;
     font-size: 1.1em;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
     width: 100%; /* Setează lățimea butoanelor la 100% din container */
     margin-bottom: 10px; /* Adaugă spațiu între butoane */
     box-sizing: border-box; /* Asigură că padding-ul nu afectează dimensiunea */
@@ -120,10 +134,12 @@ body {
 
 .profile-container button:hover {
     background-color: #574bdb;
+    transform: scale(1.05); /* Efect de zoom pe buton */
 }
 
 .profile-container .images-button {
     background-color: #ff8c00;
+    align-items: end;
 
 }
 
@@ -133,6 +149,7 @@ body {
 
 .profile-container .map-button {
     background-color: #28a745;
+    align-items: end;
 }
 
 .profile-container .map-button:hover {
@@ -142,7 +159,7 @@ body {
 /* Lista de imagini favorite (partea dreaptă) */
 .favorites-container {
     padding: 40px;
-    flex-grow: 1; /* Ocupă restul spațiului */
+    flex: 0 0 45%;
     overflow-y: auto; /* Permite scroll dacă imaginile depășesc spațiul */
 }
 
@@ -157,19 +174,36 @@ body {
     flex-wrap: wrap;
     gap: 20px;
 }
+
 .favorite-item {
+    display: flex;
+    flex-direction: column;  /* Folosim flexbox pentru a alinia elementele pe verticală */
+    justify-content:end;
     text-align: center;
-    width: calc(33.333% - 20px); /* Trei imagini pe rând */
+    width: calc(33.333% - 20px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     overflow: hidden;
     background: #f9f9f9;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding-bottom: 10px;  /* Adăugăm puțin spațiu pentru a nu atinge marginea de jos */
 }
+
+.favorite-item:hover {
+    transform: scale(1.05); /* Efect de zoom pe imagine */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15); /* Efect de umbră */
+}
+
 
 .favorite-item img {
     width: 100%;
     display: block;
-    border-bottom: 1px solid #ddd; /* Linie sub imagine pentru separare */
+    border-bottom: 1px solid #ddd;
+    transition: transform 0.3s ease;
+}
+
+.favorite-item img:hover {
+    transform: scale(1.1); /* Zoom pe imagine la hover */
 }
 
 .favorite-item .remove-favorite {
@@ -181,12 +215,13 @@ body {
     border-radius: 5px;
     font-size: 1.1em;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
     width: 100%;
 }
 
 .favorite-item .remove-favorite:hover {
     color: rgb(0, 0, 0);
+    transform: scale(1.05);
 }
 
 /* Efect când butonul este apăsat */
@@ -219,34 +254,40 @@ textarea:focus {
 /* Stilizare pentru butoane */
 .save-review, .remove-favorite {
     display: inline-block;
-    margin-top: 10px;
-    padding: 8px 15px;
     border: none;
     border-radius: 5px;
     font-size: 1.1em;
     cursor: pointer;
-    transition: background-color 0.3s, box-shadow 0.3s;
     width: 100%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
+
 
 .save-review {
     background-color: #28a745;
     color: #fff;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
 }
 
 .save-review:hover {
     background-color: #218838;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    transform: scale(1.05);
 }
 
 .remove-favorite {
     background-color: #dc3545;
     color: #fff;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .remove-favorite:hover {
     background-color: #c82333;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    transform: scale(1.05);
 }
 
 /* Aspect general pentru fiecare element de imagine favorită */
@@ -258,19 +299,184 @@ textarea:focus {
     background-color: #f9f9f9;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     text-align: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
 }
 
 .favorite-item img {
     max-width: 100%;
     border-radius: 5px;
+}
+
+
+.favorite-item p {
+    margin-bottom: 10px;
+    font-size: 25px;
+    font-family: Copperplate;
+    text-align: left;
+
+}
+
+/* Animație pentru slide-in */
+@keyframes slideInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Butonul pentru a marca ca "done" */
+.favorite-item .mark-done {
+    margin-top: 10px; /* Spațiu între imagine și buton */
+    background-color: #120c7d;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    width: 100%;
+}
+
+.mark-done:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+.favorite-item {
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.favorite-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.favorite-item textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.favorite-item button {
+    margin-top: 10px;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
+
+}
+
+.favorite-item button:hover {
+    background-color: #ddd;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
+}
+
+/* Stilizarea pentru secțiunea "Visited" */
+.visited-container {
+    padding: 40px;
+    flex: 0 0 40%;
+    overflow-y: auto; /* Permite scroll dacă imaginile depășesc spațiul */
+}
+
+
+.visited-container h2 {
+    color: #333;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+.visited-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.visited-item {
+    display: flex;
+    flex-direction: column;  /* Folosim flexbox pentru a alinia elementele pe verticală */
+    justify-content:end;
+    text-align: center;
+    width: calc(33.333% - 20px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f9f9f9;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding-bottom: 10px;  /* Adăugăm puțin spațiu pentru a nu atinge marginea de jos */
+}
+
+.visited-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.visited-item img {
+    width: 100%;
+    display: block;
+    border-bottom: 1px solid #ddd;
+    transition: transform 0.3s ease;
+}
+
+.visited-item img:hover {
+    transform: scale(1.1);
+}
+
+.visited-item .mark-undone {
+    margin-top: 10px; /* Spațiu între imagine și buton */
+    background-color: #6c63ff;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    width: 100%;
+}
+
+.visited-item .mark-undone:hover {
+    color: rgb(0, 0, 0);
+    transform: scale(1.05);
+}
+
+/* Efect când butonul este apăsat */
+.visited-item .mark-undone.clicked {
+    color: white;
+    opacity: 0;
+}
+
+.visited-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.visited-item img {
+    max-width: 100%;
+    border-radius: 5px;
     margin-bottom: 10px;
 }
 
-/* Adaugă spațiu între elementele butoanelor */
-.favorite-item button {
-    margin: 5px;
-}
-.favorite-item p {
+
+.visited-item p {
     margin-bottom: 10px;
     font-size: 25px;
     font-family: Copperplate;

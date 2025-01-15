@@ -8,6 +8,7 @@
 
 body, html {
     height: 100%;
+    overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 /* Hamburger Menu */
@@ -16,6 +17,7 @@ body, html {
     top: 20px;
     left: 20px;
     z-index: 1000; /* Asigură-te că meniul este deasupra altor elemente */
+    animation: fadeIn 1s ease-out;
 }
 
 .hamburger-icon {
@@ -26,7 +28,12 @@ body, html {
     cursor:pointer;
     padding: 10px;
     display: block;
+    transition: transform 0.3s ease;
 }
+.hamburger-icon:hover {
+    transform: rotate(90deg); /* Efect de rotație când se face hover */
+}
+
 
 .menu {
     display: none; /* Meniul este ascuns inițial */
@@ -36,6 +43,7 @@ body, html {
     width: 150px; /* Lățimea meniului */
     border-radius: 5px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Umbră pentru efect vizual */
+    animation: slideInMenu 0.5s ease-out;
 }
 
 .menu.show {
@@ -48,6 +56,7 @@ body, html {
     padding: 10px 20px;
     text-decoration: none;
     font-size: 18px;
+    transition: background-color 0.3s ease;
 }
 
 .menu a:hover {
@@ -69,6 +78,7 @@ body, html {
     margin: auto;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     padding-top: 70px; /* Asigură-te că fundalul nu este acoperit de meniu */
+    animation: fadeInBackground 2s ease-out;
 }
 
 /* Form container styles */
@@ -78,6 +88,7 @@ body, html {
     align-items: center;
     padding: 30px;
     width: 100%;
+    animation: fadeIn 1.5s ease-in-out forwards;
 }
 
 .form-box {
@@ -88,19 +99,24 @@ body, html {
     width: 500px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     text-align: center;
+    animation: slideUp 1s ease-out;
 }
 
 .form-box h2 {
     font-size: 50px;
-    color: #fff;
+    color: #070505;
     margin-bottom: 25px;
     font-family: Copperplate;
     font-weight: bold;
+    animation: fadeIn 2s ease-out;
+
 }
 
 .input-field {
     margin-bottom: 20px;
     text-align: left;
+    opacity: 0;
+    animation: fadeIn 1s ease-in-out forwards;
 }
 
 .input-field label {
@@ -112,6 +128,15 @@ body, html {
     font-family: Copperplate;
 }
 
+.input-field:nth-child(1) {
+    animation-delay: 0.3s;
+}
+
+.input-field:nth-child(2) {
+    animation-delay: 0.6s;
+}
+
+
 .input-field input {
     width: 100%;
     padding: 12px;
@@ -119,6 +144,8 @@ body, html {
     border: none;
     border-radius: 5px;
     outline: none;
+    transition: border 0.3s ease;
+
 }
 
 .input-field input:focus {
@@ -131,6 +158,9 @@ body, html {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeIn 1.5s ease-in-out forwards;
+    animation-delay: 1.5s; /* Delay for animation */
 }
 
 input[type="checkbox"] {
@@ -148,7 +178,7 @@ input[type="checkbox"] {
 
 .forgot-pass {
     text-decoration: none;
-    color: #000000;
+    color: #ffffff;
 }
 
 .forgot-pass:hover {
@@ -166,6 +196,8 @@ input[type="checkbox"] {
     border-radius: 5px;
     cursor: pointer;
     font-family: Copperplate;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
 }
 
 .btn:hover {
@@ -174,9 +206,11 @@ input[type="checkbox"] {
 
 .bottom-text {
     font-size: 25px;
-    color: #fff;
+    color: #000000;
     margin-top: 25px;
     font-family: Copperplate;
+    animation-delay: 2s; /* Delay for animation */
+
 }
 
 .bottom-text a {
@@ -186,4 +220,43 @@ input[type="checkbox"] {
 
 .bottom-text a:hover {
     text-decoration: underline;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInBackground {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInMenu {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
 }

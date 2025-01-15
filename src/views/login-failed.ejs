@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Failed</title>
+    <style>
+        body {
+            background: url('background2.jpg') no-repeat center center/cover;
+            font-family: 'Copperplate', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            animation: bounceIn 1s ease-in-out;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #7123d1;
+            animation: pulse 1.5s infinite;
+        }
+
+        p {
+            font-size: 1rem;
+            margin: 20px 0;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: #fff;
+            background-color: #00ff8c;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+
+        #dynamicMessage {
+            font-size: 0.9rem;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        @keyframes bounceIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                color: #7123d1;
+            }
+            50% {
+                color: #00ff8c;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login Failed</h1>
+        <p>The email or password you entered is incorrect. Please try again.</p>
+        <p id="dynamicMessage"></p>
+        <a href="/login">Go back to login</a>
+    </div>
+
+    <script>
+        // Mesaje amuzante care vor fi afișate dinamic
+        const funnyMessages = [
+            "Oops! Even computers make mistakes sometimes. Not this time though!",
+            "You misspelled your password? We've all been there.",
+            "Did you forget your password, or is it playing hide-and-seek?",
+            "Passwords are like pizza – best served right. Try again!",
+            "Wrong password! Time to take a coffee break and try again."
+        ];
+
+        // Selectează un mesaj aleatoriu
+        const randomMessage = funnyMessages[Math.floor(Math.random() * funnyMessages.length)];
+
+        // Afișează mesajul în elementul dinamic
+        document.getElementById('dynamicMessage').textContent = randomMessage;
+    </script>
+</body>
+</html>

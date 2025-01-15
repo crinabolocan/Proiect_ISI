@@ -11,50 +11,70 @@ body, html {
 }
 
 body {
-    background: url('background2.jpg') no-repeat center center;
-    background-size: 100%;
+    background: url('background2.jpg') repeat center center;
+    background-size: cover;
     height: 100%;
-    width: auto;
-    max-width: 90%;
-    padding: 20px;
+    width: 100%;
+    max-width: 100%;
+    padding: 2%;
     border-radius: 15px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: auto;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1s ease-in-out; /* Adăugăm o animație pentru încărcare */
 }
 
+/* Animație pentru încărcare */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
 
 /* Hamburger Menu */
 .hamburger-menu {
     position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 1000; /* Asigură-te că meniul este deasupra altor elemente */
+    top: 2vw;
+    left: 2vw;
+    z-index: 1000;
+    animation: slideIn 0.5s ease-out; /* Animație de intrare a meniului */
 }
 
 .hamburger-icon {
     font-size: 45px;
     color: rgb(196, 35, 185);
     background-color: transparent;
-    border:darkgray;
-    cursor:pointer;
+    border: darkgray;
+    cursor: pointer;
     padding: 10px;
     display: block;
+    transition: transform 0.3s ease; /* Animație de transformare la hover */
+}
+
+.hamburger-icon:hover {
+    transform: rotate(90deg); /* Rotește icon-ul la hover */
 }
 
 .menu {
-    display: none; /* Meniul este ascuns inițial */
+    display: none;
     position: absolute;
     left: 0;
-    background-color: #333; /* Fundalul meniului */
-    width: 150px; /* Lățimea meniului */
+    background-color: #333;
+    width: 150px;
     border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Umbră pentru efect vizual */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s ease; /* Tranziție pentru vizibilitatea meniului */
 }
 
 .menu.show {
-    display: block; /* Meniul devine vizibil când este activat */
+    display: block;
+    opacity: 1;
 }
 
 .menu a {
@@ -63,22 +83,32 @@ body {
     padding: 10px 20px;
     text-decoration: none;
     font-size: 18px;
+    transition: background-color 0.3s ease; /* Tranziție pentru schimbarea culorii */
 }
 
 .menu a:hover {
     background-color: #575757;
 }
 
-
 /* Sigla în partea dreaptă sus */
 .logo-container {
     position: absolute;
-    top: 60px;
-    right: 190px;
+    top: 10vw;
+    right: 8vw;
+    animation: logoAnim 1s ease-out; /* Animație de scalare a logo-ului */
+}
+
+@keyframes logoAnim {
+    0% {
+        transform: scale(0.5);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 .logo {
-    width: 400px; /* Ajustează dimensiunea logo-ului */
+    width: 30vw;
     height: auto;
 }
 
@@ -88,23 +118,46 @@ h1 {
     font-size: 55px;
     color: white;
     padding-top: 100px;
+    animation: slideInText 1s ease-out; /* Animație de intrare pentru titlu */
+}
+
+@keyframes slideInText {
+    0% {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 /* Containerul principal care va conține descrierea și butoanele */
 .content {
+    display: block;
     justify-content: space-between;
     align-items: flex-start;
-    width: 80%;
-    padding: 40px;
+    width: 100%;
+    height: auto;
     margin-top: 50px;
 }
 
 /* Descrierea textului */
 .description-container {
-    width: 60%; /* Lăsăm mai mult spațiu pentru text */
-    padding: 20px;
-    color: #fff; /* Text alb pentru a fi vizibil pe fundal */
+    width: 60%;
+    color: #fff;
     line-height: 1.6;
+    opacity: 0;
+    animation: fadeInText 1.5s ease-in-out forwards; /* Animație de intrare pentru text */
+}
+
+@keyframes fadeInText {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 .description-container p {
@@ -142,8 +195,33 @@ h1 {
     cursor: pointer;
     text-decoration: none;
     text-align: center;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Tranziție pentru hover */
 }
 
 .btn:hover {
     background: #574bdb;
+    transform: scale(1.05); /* Efect de mărire la hover */
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 5%;
+    }
+
+    h1 {
+        font-size: 15vw;
+    }
+
+    .description-container p {
+        font-size: 6vw;
+    }
+
+    .description-container strong {
+        font-size: 8vw;
+    }
+
+    .btn {
+        padding: 4vw;
+        font-size: 6vw;
+    }
 }
