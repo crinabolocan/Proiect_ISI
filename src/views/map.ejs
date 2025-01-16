@@ -72,7 +72,7 @@
     ], function(esriConfig, WebMap, MapView, GraphicsLayer, Graphic, Point, SimpleMarkerSymbol, PictureMarkerSymbol, Locator, reactiveUtils, FeatureLayer, SimpleLineSymbol, FeatureSet, route, RouteParameters) {
 
       // Set the API key
-      esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurHTsJQpcDKEq34qs1KboR7ROzBxg9Ji1qhoRpyID_b3LhnnR36uXNGvR19UH-CCr5LINEBSM7uinPv6zbJiwubIC7vFYy48UVUSs_FieWxQs--DmcQPM9Reu1I2Igb4HXkUTK6eTA2MDfPJO-QVgFwk3i5ad5xaeRRXUUw1ISFVGNTPIYs4F2JoAIUYLiCqF89pwu6ZQiTpF6UsqGFV151o.AT1_dTFGHSMJ";
+      esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurNbfUptQrXI1Z7zvb59Ej1DTFYTmNwF5EfV1o991DM03fX4qIfSSYvYE4KowtxT51jEPi6CCj6PV_xXizP-lK4QhZ-asd-FUuWJnZCoqg0UZsesGjDZ22GcGSuy1dRPN0vMY0dpsi3jPAxb1YyrnI-fNeqow0KkoPuCq0PpqoJSkLSm7YhnCUcFUItRTGaAgrPxVgHIiYsC9eZPW9av63wA.AT1_8A9G5qEy";
       const routeUrl = "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
       // Initialize the map
       const initializeMap = () => {
@@ -81,7 +81,7 @@
           const webMap = new WebMap({
             basemap: "streets-navigation-vector"
           });
-
+          console.log("webMap", webMap);
           // Create the MapView
           const mapView = new MapView({
             container: "map-container", // ID of the HTML element

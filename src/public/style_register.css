@@ -28,45 +28,45 @@ body, html {
 }
 
 
+
 /* Hamburger Menu */
 .hamburger-menu {
     position: fixed;
-    top: 20px;
-    left: 20px;
+    top: 2vw;
+    left: 2vw;
     z-index: 1000;
-    animation: fadeIn 1s ease-in-out;
-
+    animation: slideIn 0.5s ease-out; /* Animație de intrare a meniului */
 }
 
 .hamburger-icon {
     font-size: 45px;
-    color: rgb(196, 35, 185);
+    color: rgb(13, 68, 81);
     background-color: transparent;
     border: darkgray;
     cursor: pointer;
     padding: 10px;
     display: block;
-    transition: transform 0.3s ease;
-
+    transition: transform 0.3s ease; /* Animație de transformare la hover */
 }
+
 .hamburger-icon:hover {
-    transform: rotate(90deg);
+    transform: rotate(90deg); /* Rotește icon-ul la hover */
 }
 
 .menu {
     display: none;
     position: relative;
-    left: 0;
-    background-color: #333;
-    width: 150%;
+    background-color: transparent;
+    width: 150px;
     border-radius: 5px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    animation: slideInMenu 0.5s ease-out;
-
+    opacity: 0;
+    transition: opacity 0.3s ease; /* Tranziție pentru vizibilitatea meniului */
 }
 
 .menu.show {
     display: block;
+    opacity: 1;
 }
 
 .menu a {
@@ -75,34 +75,30 @@ body, html {
     padding: 10px 20px;
     text-decoration: none;
     font-size: 18px;
-    transition: background-color 0.3s ease;
-
+    transition: background-color 0.3s ease; /* Tranziție pentru schimbarea culorii */
 }
 
 .menu a:hover {
     background-color: #575757;
 }
 
-/* Button */
 .btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 25px;
-    background: #6c63ff;
-    color: #fff;
+    background: #02435b;
+    padding: 15px 30px;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
     border: none;
-    border-radius: 5px;
+    border-radius: 30px;
     cursor: pointer;
-    font-family: Copperplate;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-
+    text-transform: uppercase;
+    transition: 0.3s;
 }
 
 .btn:hover {
-    background: #574bdb;
-    transform: translateY(-5px); /* Slightly lift the button */
-
+    background: #005bb5;
+    transform: scale(1.05);
 }
+
 /* Form container styles */
 .form-container {
     display: flex;
@@ -199,25 +195,6 @@ body, html {
     text-decoration: underline;
 }
 
-/* Button */
-.submit-btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 25px;
-    background: #6c63ff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: Copperplate;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.submit-btn:hover {
-    background: #574bdb;
-    transform: translateY(-5px); /* Slight hover lift */
-
-}
 
 .bottom-link {
     font-size: 20px;

@@ -274,7 +274,7 @@ app.get('/images', async (req, res) => {
     }
 
     const page = req.query.page || 1;  // Paginarea începe de la 1
-    const imagesPerPage = 56; // Numărul de imagini pe care dorești să le afișezi per pagină
+    const imagesPerPage = 58; // Numărul de imagini pe care dorești să le afișezi per pagină
 
     try {
         const response = await axios.get('https://api.unsplash.com/photos/random', {
@@ -293,6 +293,35 @@ app.get('/images', async (req, res) => {
         res.status(500).send('Internal server error');
     }
 });
+
+// Rute pentru forgot password
+app.get('/forgot-password', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'forgot-password.html'));
+});
+
+// Rutele pentru resetarea parolei
+app.post('/forgot-password', (req, res) => {
+    const { email } = req.body;
+
+    // Verifică dacă adresa de email există în baza de date
+    db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
+        if (err) {
+            console.error('Error executing query:', err.message);
+            res.status(500).send('Internal server error');
+            return;
+        }
+
+        if (results.length === 0) {
+            return res.send('Email not found.');
+        }
+
+        // Aici poți genera un token pentru resetare și trimite un email de resetare
+        // Folosind un serviciu de email cum ar fi Nodemailer
+        res.send('A link to reset your password has been sent to your email.');
+    });
+});
+
+
 
 
 app.post('/add-favorite', async (req, res) => {

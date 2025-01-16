@@ -9,46 +9,50 @@ body {
     font-family: Copperplate;
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #f0f2f5, #e0e6ef); /* Fundal cu gradient */
+    background: url('background2.jpg') repeat center center;    
     height: 100%;
     transition: background 0.5s ease;
 }
 
+
 /* Hamburger Menu */
 .hamburger-menu {
     position: fixed;
-    top: 20px;
-    left: 20px;
+    top: 2vw;
+    left: 2vw;
     z-index: 1000;
+    animation: slideIn 0.5s ease-out; /* Animație de intrare a meniului */
 }
 
 .hamburger-icon {
     font-size: 45px;
-    color: rgb(196, 35, 185);
+    color: rgb(13, 68, 81);
     background-color: transparent;
     border: darkgray;
     cursor: pointer;
     padding: 10px;
     display: block;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease; /* Animație de transformare la hover */
 }
 
 .hamburger-icon:hover {
-    transform: rotate(90deg); /* Efect de rotație când se face hover */
+    transform: rotate(90deg); /* Rotește icon-ul la hover */
 }
 
 .menu {
     display: none;
     position: relative;
-    left: 0;
-    background-color: #333;
-    width: 100%;
+    background-color: transparent;
+    width: 150px;
     border-radius: 5px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s ease; /* Tranziție pentru vizibilitatea meniului */
 }
 
 .menu.show {
     display: block;
+    opacity: 1;
 }
 
 .menu a {
@@ -57,7 +61,7 @@ body {
     padding: 10px 20px;
     text-decoration: none;
     font-size: 18px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease; /* Tranziție pentru schimbarea culorii */
 }
 
 .menu a:hover {
@@ -90,70 +94,99 @@ body {
     transition: transform 0.3s ease;
 }
 
-/* Profil utilizator (partea stângă) */
+/* Containerele principale */
 .profile-container {
-    background: #ffffff;
-    padding: 40px;
-    border-right: 1px solid #ddd;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    background: url('background2.jpg') repeat center;
-    position: sticky;
-    top: 0;
-    width: 100%;
-    flex: 0 0 15%;
-    transition: background 0.3s ease;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 420px;
+    margin: 120px auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .profile-container h1 {
-    color: #ffffff;
-    font-size: 55px;
-    padding-top: 90px;
-    animation: slideInLeft 1s ease-out; /* Animație pentru titlu */
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 25px;
+    font-weight: 600;
 }
 
-.profile-container p {
-    font-size: 25px;
-    color: #ffffff;
-    align-items: end;
-    padding-top: 100px;
-}
-
-.profile-container button {
-    background-color: #6c63ff;
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 5px;
+.profile-container .email {
     font-size: 1.1em;
+    color: #777;
+    margin-bottom: 30px;
+}
+
+/* Containere butoane */
+.buttons-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+/* Butoane */
+.btn {
+    background: #02435b;
+    padding: 15px 30px;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    width: 100%; /* Setează lățimea butoanelor la 100% din container */
-    margin-bottom: 10px; /* Adaugă spațiu între butoane */
-    box-sizing: border-box; /* Asigură că padding-ul nu afectează dimensiunea */
+    text-transform: uppercase;
+    transition: 0.3s;
 }
 
-.profile-container button:hover {
-    background-color: #574bdb;
-    transform: scale(1.05); /* Efect de zoom pe buton */
+.btn:hover {
+    background: #005bb5;
+    transform: scale(1.05);
 }
 
-.profile-container .images-button {
-    background-color: #ff8c00;
-    align-items: end;
-
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.profile-container .images-button:hover {
-    background-color: #ff6a00;
+/* Culoare butoane specifice */
+.logout-btn {
+    background: #02435b;
+    color: white;
 }
 
-.profile-container .map-button {
-    background-color: #28a745;
-    align-items: end;
+.images-btn {
+    background-color: #ffffff;
+    color: #02435b;
+    border: 1px solid #02435b;
 }
 
-.profile-container .map-button:hover {
-    background-color: #218838;
+.map-btn {
+    background: #02435b;
+    color: white;
+}
+
+.toggle-btn {
+    background-color: #ffffff;
+    color: #02435b;
+    border: 1px solid #02435b;
+}
+
+.toggle-btn1 {
+    background-color:  #02435b;
+    color: #ffffff;
+}
+
+/* Stilizare pentru butoane responsive */
+@media (max-width: 600px) {
+    .profile-container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .btn {
+        font-size: 1em;
+    }
 }
 
 /* Lista de imagini favorite (partea dreaptă) */
@@ -164,7 +197,7 @@ body {
 }
 
 .favorites-container h2 {
-    color: #333;
+    color: #ffffff;
     font-size: 1.8em;
     margin-bottom: 20px;
 }
@@ -209,14 +242,16 @@ body {
 .favorite-item .remove-favorite {
     margin-top: 10px; /* Spațiu între imagine și buton */
     background-color: #6c63ff;
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 5px;
-    font-size: 1.1em;
-    cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
     width: 100%;
+
+    padding: 15px 30px;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    text-transform: uppercase;
 }
 
 .favorite-item .remove-favorite:hover {
@@ -253,32 +288,55 @@ textarea:focus {
 
 /* Stilizare pentru butoane */
 .save-review, .remove-favorite {
-    display: inline-block;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.1em;
-    cursor: pointer;
-    width: 100%;
+    margin-top: 10px; /* Spațiu între imagine și buton */
+    background-color: #5ba81f;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    width: 100%;
+    padding: 15px 30px;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    text-transform: uppercase;
 }
 
 
 .save-review {
-    background-color: #28a745;
-    color: #fff;
+    margin-top: 10px; /* Spațiu între imagine și buton */
+    background-color: #5ba81f;
     transition: background-color 0.3s ease, transform 0.3s ease;
-
+    width: 100%;
+    padding: 15px 30px;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    text-transform: uppercase;
 }
 
 .save-review:hover {
-    background-color: #218838;
+    background-color: #6aaf79;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s ease, transform 0.3s ease;
     transform: scale(1.05);
+
+    margin-top: 10px; /* Spațiu între imagine și buton */
+    background-color: #5ba81f;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    width: 100%;
+    padding: 15px 30px;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    text-transform: uppercase;
 }
 
 .remove-favorite {
-    background-color: #dc3545;
+    background: #02435b;
     color: #fff;
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
@@ -333,18 +391,19 @@ textarea:focus {
 .favorite-item .mark-done {
     margin-top: 10px; /* Spațiu între imagine și buton */
     background-color: #120c7d;
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 5px;
-    font-size: 1.1em;
-    cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
     width: 100%;
+    padding: 15px 30px;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    text-transform: uppercase;
 }
 
 .mark-done:hover {
-    background-color: #45a049;
+    background: #02435b;
     transform: scale(1.05);
 }
 
@@ -370,11 +429,17 @@ textarea:focus {
 }
 
 .favorite-item button {
-    margin-top: 10px;
-    border-radius: 5px;
-    padding: 10px;
-    cursor: pointer;
+    margin-top: 10px; /* Spațiu între imagine și buton */
+    background: #02435b;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    width: 100%;
+    padding: 15px 30px;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    text-transform: uppercase;
 
 
 }
@@ -394,7 +459,7 @@ textarea:focus {
 
 
 .visited-container h2 {
-    color: #333;
+    color: #ffffff;
     font-size: 1.8em;
     margin-bottom: 20px;
 }
@@ -437,15 +502,16 @@ textarea:focus {
 
 .visited-item .mark-undone {
     margin-top: 10px; /* Spațiu între imagine și buton */
-    background-color: #6c63ff;
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 5px;
-    font-size: 1.1em;
-    cursor: pointer;
+    background: #02435b;
     transition: background-color 0.3s ease, transform 0.3s ease;
     width: 100%;
+    padding: 15px 30px;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    text-transform: uppercase;
 }
 
 .visited-item .mark-undone:hover {
@@ -482,4 +548,15 @@ textarea:focus {
     font-family: Copperplate;
     text-align: left;
 
+}
+
+/* Stil pentru paragrafele de descriere din secțiuni */
+.section-description {
+    font-size: 20px;
+    color: #ffffff;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    line-height: 1.5;
 }

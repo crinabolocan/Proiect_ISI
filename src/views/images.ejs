@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Images</title>
+    <title>Enhanced Images Gallery</title>
     <link rel="stylesheet" href="style_images.css">
 </head>
 <body>
@@ -24,14 +24,13 @@
             <% images.forEach(image => { %>
                 <div class="image-item">
                     <img src="<%= image %>" alt="Random Image">
-                    <div class="heart" id="heaart" onclick="toggleHeart(this)">
-                        <div class="heart-shape"></div>
-                    </div>
+                    <svg class="heart" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" onclick="toggleHeart(this)">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
                     <button onclick="addToFavorites('<%= image %>')">Add to Favorites</button>
                 </div>
             <% }) %>
         </div>
-        <!-- Butonul pentru încărcarea altor imagini -->
         <div class="load-more">
             <a href="/images?page=<%= page + 1 %>">
                 <button>Load More Images</button>
@@ -46,7 +45,6 @@
             menu.classList.toggle('show');
         }
 
-        // Închide meniul dacă se face clic în afara acestuia
         document.addEventListener('click', function(event) {
             const menu = document.getElementById('menu');
             const hamburgerIcon = document.querySelector('.hamburger-icon');
@@ -56,23 +54,16 @@
             }
         });
 
-        // Functia pentru a activa/dezactiva inima
         function toggleHeart(heartElement) {
-            // Togglează clasa 'liked'
             heartElement.classList.toggle('liked');
-            
             const imageUrl = heartElement.closest('.image-item').querySelector('img').src;
-            
             if (heartElement.classList.contains('liked')) {
-                // Dacă imaginea a fost adăugată la favorite (like)
                 addToFavorites(imageUrl);
             } else {
-                // Dacă imaginea a fost eliminată din favorite (unlike)
                 removeFromFavorites(imageUrl);
             }
         }
-    
-        // Functia pentru a adăuga imaginea la favorite
+
         function addToFavorites(imageUrl) {
             fetch('/add-favorite', {
                 method: 'POST',
@@ -89,8 +80,7 @@
                 console.error('Error adding image to favorites:', error);
             });
         }
-    
-        // Functia pentru a elimina imaginea din favorite
+
         function removeFromFavorites(imageUrl) {
             fetch('/remove-favorite', {
                 method: 'POST',

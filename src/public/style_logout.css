@@ -1,4 +1,4 @@
-/* Aplică fundalul pentru întreaga pagină */
+/* Resetări generale */
 * {
     margin: 0;
     padding: 0;
@@ -8,22 +8,20 @@
 
 body, html {
     height: 100%;
+    font-family: 'Copperplate';
 }
 
+/* Fundal gradient cu siluetă */
 body {
     background: url('background2.jpg') repeat center center;
-    background-size: cover;
-    height: 100%;
-    width: 100%;
-    max-width: 100%;
-    padding: 2%;
-    border-radius: 15px;
-    margin: 0;
+    color: white;
+    text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    animation: fadeIn 1s ease-in-out; /* Adăugăm o animație pentru încărcare */
+    overflow: hidden;
+    animation: fadeIn 1s ease-in-out;
 }
 
 /* Animație pentru încărcare */
@@ -36,18 +34,41 @@ body {
     }
 }
 
+/* Logo-ul */
+.logo-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    animation: logoAnim 1s ease-out; /* Animație de scalare a logo-ului */
+}
+
+.logo {
+    height: 75px;
+    width: auto;
+}
+
+@keyframes logoAnim {
+    0% {
+        transform: scale(0.5);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+
 /* Hamburger Menu */
 .hamburger-menu {
     position: fixed;
     top: 2vw;
-    left: 2vw;
+    right: 2vw;
     z-index: 1000;
     animation: slideIn 0.5s ease-out; /* Animație de intrare a meniului */
 }
 
 .hamburger-icon {
     font-size: 45px;
-    color: rgb(196, 35, 185);
+    color: rgb(13, 68, 81);
     background-color: transparent;
     border: darkgray;
     cursor: pointer;
@@ -62,9 +83,8 @@ body {
 
 .menu {
     display: none;
-    position: absolute;
-    left: 0;
-    background-color: #333;
+    position: relative;
+    background-color: transparent;
     width: 150px;
     border-radius: 5px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
@@ -90,36 +110,17 @@ body {
     background-color: #575757;
 }
 
-/* Sigla în partea dreaptă sus */
-.logo-container {
-    position: absolute;
-    top: 10vw;
-    right: 8vw;
-    animation: logoAnim 1s ease-out; /* Animație de scalare a logo-ului */
-}
 
-@keyframes logoAnim {
-    0% {
-        transform: scale(0.5);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-.logo {
-    width: 30vw;
-    height: auto;
-}
-
-/* Titlul "Welcome" în centrul sus */
+/* Titlul principal */
 h1 {
-    text-align: center;
-    font-size: 55px;
-    color: white;
-    padding-top: 100px;
+    font-size: 60px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
     animation: slideInText 1s ease-out; /* Animație de intrare pentru titlu */
+
 }
+
 
 @keyframes slideInText {
     0% {
@@ -132,24 +133,15 @@ h1 {
     }
 }
 
-/* Containerul principal care va conține descrierea și butoanele */
-.content {
-    display: block;
-    justify-content: space-between;
-    align-items: flex;
-    width: 100%;
-    height: auto;
-    margin-top: 50px;
-}
-
-/* Descrierea textului */
+/* Textul descriptiv */
 .description-container {
-    width: 60%;
-    margin-left: 1%;
-    color: #fff;
-    line-height: 1.6;
-    opacity: 0;
+    max-width: 800px;
+    line-height: 1.8;
+    margin-bottom: 30px;
+    font-size: 25px;
+    opacity: 0.9;
     animation: fadeInText 1.5s ease-in-out forwards; /* Animație de intrare pentru text */
+
 }
 
 @keyframes fadeInText {
@@ -161,68 +153,40 @@ h1 {
     }
 }
 
-.description-container p {
-    font-size: 25px;
-    margin-bottom: 15px;
-}
-
-.description-container strong {
-    font-size: 35px;
-}
-
-/* Butoanele */
-.buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 35%;
-    margin-top: 50px;
-    margin-left: 1%;
-}
-
+/* Butonul principal */
 .buttons a {
-    width: 100%;
-    margin-bottom: 15px;
+    text-decoration: none;
 }
 
 .btn {
-    width: 100%;
-    padding: 15px;
-    font-size: 20px;
-    background: #6c63ff;
-    color: white;
+    background: #02435b;
+    padding: 15px 30px;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
     border: none;
-    border-radius: 5px;
+    border-radius: 30px;
     cursor: pointer;
-    text-decoration: none;
-    text-align: center;
-    transition: background-color 0.3s ease, transform 0.3s ease; /* Tranziție pentru hover */
+    text-transform: uppercase;
+    transition: 0.3s;
 }
 
 .btn:hover {
-    background: #574bdb;
-    transform: scale(1.05); /* Efect de mărire la hover */
+    background: #005bb5;
+    transform: scale(1.05);
 }
 
+/* Responsivitate */
 @media (max-width: 768px) {
-    body {
-        padding: 5%;
-    }
-
     h1 {
-        font-size: 15vw;
+        font-size: 40px;
     }
 
-    .description-container p {
-        font-size: 6vw;
-    }
-
-    .description-container strong {
-        font-size: 8vw;
+    .description-container {
+        font-size: 16px;
     }
 
     .btn {
-        padding: 4vw;
-        font-size: 6vw;
+        font-size: 16px;
+        padding: 10px 20px;
     }
 }
